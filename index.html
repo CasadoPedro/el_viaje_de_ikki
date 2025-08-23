@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pantalla de Inicio</title>
+
+  <!-- Fuente Montserrat desde Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet" />
+
+  <!-- CSS separado -->
+  <link rel="stylesheet" href="css/index.css" />
+</head>
+<body>
+  <h1>¡Bienvenidos!</h1>
+  <p>Ingrese la cantidad de equipos</p>
+  <select id="equipoSelect">
+    <option value="">Seleccione...</option>
+    <option value="2">2 equipos</option>
+    <option value="3">3 equipos</option>
+    <option value="4">4 equipos</option>
+    <option value="5">5 equipos</option>
+  </select>
+  <button id="startBtn" disabled>Iniciar</button>
+
+  <!-- JS separado -->
+  <script type="module" src="./js/index.js"></script>
+
+</body>
+</html>

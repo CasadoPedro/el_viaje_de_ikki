@@ -1,0 +1,62 @@
+.container {
+    text-align: center;
+    color: black; /* Texto principal en negro */
+    max-width: 900px;
+    margin: auto;
+}
+
+h1 {
+    font-weight: 500;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: black; /* Título en negro */
+}
+
+.subtitulo {
+    font-weight: 300;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    color: black; /* Subtítulo en negro */
+}
+
+.fila {
+    display: flex;
+    justify-content: center;
+    gap: 2rem; /* Más espacio entre botones */
+    margin-bottom: 2rem; /* Más espacio entre filas */
+}
+
+.btn {
+    width: 180px; /* Más ancho */
+    height: 80px; /* Menos alto */
+    border: none;
+    border-radius: 25px; /* Más redondeado */
+    color: white;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.btn .nivel {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.btn .edad {
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+.amarillo {
+    background-color: #FAB858; /* Nuevo color */
+}
+
+.azul {
+    background-color: #283583; /* Nuevo color */
+}
+
+.rojo {
+    background-color: #AF0D1E; /* Nuevo color */
+}

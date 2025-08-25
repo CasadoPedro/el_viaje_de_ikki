@@ -126,13 +126,79 @@
   // Función para actualizar el indicador
   function actualizarTurno() {
     const equipo = juego.equipos[juego.turnoActual];
-    turnoDiv.textContent = `Turno: ${equipo.nombre}`;
+    const posicion = equipo.posicion || 0; // fallback si aún no tiene posición
+    turnoDiv.innerHTML = `
+      Turno: ${equipo.nombre}<br>
+      Casillero: ${posicion}
+    `;
     // Asignamos el color del equipo al fondo
     turnoDiv.style.backgroundColor = equipo.color || "#333333"; // fallback si no tiene color
   }
+  
   // Llamamos al principio
   actualizarTurno();
   
+  const modal = document.getElementById("modal-avance");
+  const textoAvance = document.getElementById("texto-avance");
+  const btnContinuar = document.getElementById("btn-continuar");
+  
   events.addListener("spinEnd", (sector) => {
     console.log(`Woop! You won ${sector.label}`);
+
+    // Equipo actual
+    const equipo = juego.equipos[juego.turnoActual];
+
+    // Posición final tentativa
+    const resultado = parseInt(sector.label, 10);
+    const nuevaPos = (equipo.posicion || 0) + resultado;
+
+    // Bloqueamos el spin hasta continuar
+    spinEl.disabled = true;
+
+    // Mostramos modal
+    textoAvance.textContent = `Avanzar al casillero ${nuevaPos}`;
+    modal.style.display = "flex";
+
+    // Guardamos en el equipo la próxima posición (sin mover todavía)
+    equipo.proximaPosicion = nuevaPos;
   });
+
+  btnContinuar.addEventListener("click", () => {
+    modal.style.display = "none";
+    spinEl.disabled = false;
+  
+    // Equipo actual
+    const equipo = juego.equipos[juego.turnoActual];
+  
+    const origen = equipo.posicion || 0;
+    const destino = equipo.proximaPosicion;
+  
+    // Mover al equipo
+    equipo.mover(destino - origen);
+  
+    // Si pasó por un casillero de Regalo
+    if (juego.tablero.hayRegaloEntre(origen, destino)) {
+      const { jeroglifico, fraseAnterior, fraseActualizada } = equipo.revelarJeroglifico();
+      alert(
+        `Pasaste por una casilla de Regalo.\n` +
+        `Ganaste un jeroglífico: ${jeroglifico}\n\n` +
+        `Antes: ${fraseAnterior}\n` +
+        `Ahora: ${fraseActualizada}`
+      );
+    }
+    
+    // Información del casillero final
+    const casillaFinal = juego.tablero.casillas[destino - 1]; // -1 porque el array es 0-indexed
+    console.log(`El equipo ${equipo.nombre} se movió del casillero ${origen} al ${destino}`);
+    console.log(`Casillero final:`, casillaFinal);
+    console.log(`El equipo cayó en un casillero de tipo: ${casillaFinal.efecto}`);
+    
+    // Pasar turno
+    juego.turnoActual = (juego.turnoActual + 1) % juego.equipos.length;
+    actualizarTurno();
+  
+    // Guardamos el estado actualizado en sessionStorage
+    sessionStorage.setItem("juego", JSON.stringify(juego));
+  });  
+
+  

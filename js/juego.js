@@ -1,19 +1,17 @@
-// juego.js
-import Equipo from "./equipo.js";
-import Tablero from "./tablero.js";
-// import { girarRuleta } from "./ruleta.js"; // asumo que ruleta.js tiene esto
+import Equipo from "./equipo.js"; 
+import Tablero from "./tablero.js"; 
+// import { girarRuleta } from "./ruleta.js"; // asumo que ruleta.js tiene esto 
 const colores = ["#FF5733", "#33B5FF", "#FF33A8", "#33FF57"]; // colores para cada equipo
 
 class Juego {
   constructor(cantidadEquipos) {
     this.equipos = this.crearEquipos(cantidadEquipos);
-    // Asignamos colores a los equipos
     this.equipos.forEach((equipo, index) => {
-      equipo.color = colores[index % colores.length]; // asigna un color cíclicamente
+      equipo.color = colores[index % colores.length];
     });
-    this.nivel = null; // se setea después en nivel.js
+    this.nivel = null;
     this.tablero = new Tablero();
-    this.turnoActual = 0; // índice del equipo al que le toca
+    this.turnoActual = 0;
   }
 
   crearEquipos(cantidad) {
@@ -24,21 +22,48 @@ class Juego {
       "Por Atena y la justicia"
     ];
 
-    let equipos = [];
-    for (let i = 0; i < cantidad; i++) {
+    return Array.from({ length: cantidad }, (_, i) => {
       const nombre = `Equipo ${i + 1}`;
-      const frase = frasesDummy[i % frasesDummy.length]; // les asignamos alguna
-      equipos.push(new Equipo(nombre, frase));
-    }
-    return equipos;
+      const frase = frasesDummy[i % frasesDummy.length];
+      return new Equipo(nombre, frase);
+    });
   }
-  // Este es el método que permite reconstruir desde JSON
+
+  // Método para avanzar al equipo del turno actual
+  moverEquipo(pasos) {
+    const equipo = this.equipos[this.turnoActual];
+    const origen = equipo.posicion;
+    const destino = Math.min(origen + pasos, 60); // límite del tablero
+    equipo.posicion = destino;
+
+    // Verificamos si pasó por un casillero con Regalo
+    if (this.tablero.hayRegaloEntre(origen, destino)) {
+      console.log(`${equipo.nombre} encontró un Regalo y gana un token!`);
+    }
+
+    // Devolvemos info del movimiento (útil para frontend)
+    return {
+      equipo: equipo.nombre,
+      origen,
+      destino,
+      casillero: this.tablero.getCasillero(destino),
+      tokens: equipo.tokens
+    };
+  }
+
+  // Pasar al siguiente equipo
+  siguienteTurno() {
+    this.turnoActual = (this.turnoActual + 1) % this.equipos.length;
+    return this.turnoActual;
+  }
+
+  // Para reconstrucción desde JSON
   static fromJSON(data) {
     let juego = new Juego(data.equipos.length);
     juego.equipos = data.equipos.map(e => Equipo.fromJSON(e));
     juego.nivel = data.nivel;
     juego.turnoActual = data.turnoActual;
-    juego.tablero = new Tablero(); // si el tablero tiene datos guardados, reconstruirlos aquí
+    juego.tablero = new Tablero();
     return juego;
   }
 }

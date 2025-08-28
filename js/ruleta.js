@@ -121,29 +121,19 @@
   }
   let juego = Juego.fromJSON(juegoData);
   console.log("Juego reconstruido:", juego);
-  const turnoDiv = document.getElementById("turnoActual");
-  
+  const turnoDiv = document.getElementsByClassName("turnoActual")[0];
   // Función para actualizar el indicador
-  function actualizarTurno() {
-    const equipo = juego.equipos[juego.turnoActual];
-    const posicion = equipo.posicion || 0; // fallback si aún no tiene posición
-    turnoDiv.innerHTML = `
-      Turno: ${equipo.nombre}<br>
-      Casillero: ${posicion}
-    `;
-    // Asignamos el color del equipo al fondo
-    turnoDiv.style.backgroundColor = equipo.color || "#333333"; // fallback si no tiene color
-  }
+  import { actualizarTurno } from "./utils.js";
   
-  // Llamamos al principio
-  actualizarTurno();
+  // Llamamos al principio después de reconstruir el juego
+  actualizarTurno(juego, turnoDiv);
   
+
   const modal = document.getElementById("modal-avance");
   const textoAvance = document.getElementById("texto-avance");
   const btnContinuar = document.getElementById("btn-continuar");
   
   events.addListener("spinEnd", (sector) => {
-    console.log(`Woop! You won ${sector.label}`);
 
     // Equipo actual
     const equipo = juego.equipos[juego.turnoActual];
@@ -192,10 +182,17 @@
     console.log(`El equipo ${equipo.nombre} se movió del casillero ${origen} al ${destino}`);
     console.log(`Casillero final:`, casillaFinal);
     console.log(`El equipo cayó en un casillero de tipo: ${casillaFinal.efecto}`);
+    // Guardamos el estado actualizado en sessionStorage antes de ir a otra página
+    sessionStorage.setItem("juego", JSON.stringify(juego));
+
+    if (casillaFinal.efecto === "Emoción") {
+      // Redirigimos a emocion.html
+      window.location.href = "emocion.html";
+    }
     
     // Pasar turno
     juego.turnoActual = (juego.turnoActual + 1) % juego.equipos.length;
-    actualizarTurno();
+    actualizarTurno(juego, turnoDiv);
   
     // Guardamos el estado actualizado en sessionStorage
     sessionStorage.setItem("juego", JSON.stringify(juego));

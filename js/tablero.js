@@ -6,13 +6,13 @@ class Tablero {
 
   _crearZonas() {
     return [
-      { nombre: "Laberinto del miedo", inicio: 1, fin: 9 },
-      { nombre: "Mar de la soledad", inicio: 10, fin: 17 },
-      { nombre: "Bosque de las decisiones", inicio: 18, fin: 25 },
-      { nombre: "Nido de las palabras no dichas", inicio: 26, fin: 33 },
-      { nombre: "Río de las emociones", inicio: 34, fin: 41 },
-      { nombre: "Montaña del coraje", inicio: 42, fin: 50 },
-      { nombre: "Puente de los vínculos", inicio: 51, fin: 59 },
+      { nombre: "Laberinto del miedo", emocion: "Miedo", inicio: 1, fin: 9 },
+      { nombre: "Mar de la soledad", emocion:"Soledad", inicio: 10, fin: 17 },
+      { nombre: "Bosque de las decisiones", emocion:"Tristeza", inicio: 18, fin: 25 },
+      { nombre: "Nido de las palabras no dichas", emocion:"Enojo",inicio: 26, fin: 33 },
+      { nombre: "Río de las emociones", emocion:"Ternura",inicio: 34, fin: 41 },
+      { nombre: "Montaña del coraje", emocion:"Alegría", inicio: 42, fin: 50 },
+      { nombre: "Puente de los vínculos", emocion:"Confianza|", inicio: 51, fin: 59 },
       { nombre: "Corazón de Ikki", inicio: 60, fin: 60 }
     ];
   }

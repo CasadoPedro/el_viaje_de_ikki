@@ -16,10 +16,10 @@ class Juego {
 
   crearEquipos(cantidad) {
     const frasesDummy = [
-      "El cosmos arde en mi interior",
-      "Pegaso dame tu fuerza",
-      "Los caballeros nunca se rinden",
-      "Por Atena y la justicia"
+      "Igualdad sin discriminación",
+      "Nombre y nacionalidad",
+      "Derecho a una familia",
+      "Tenemos derecho a ser escuchados"
     ];
 
     return Array.from({ length: cantidad }, (_, i) => {

@@ -1,18 +1,60 @@
 #emocion-contenido {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-  }
-  
-  #emocion-contenido h1 {
-    font-size: 48px;
-    margin-bottom: 20px;
-  }
-  
-  #emocion-contenido h2 {
-    font-size: 36px;
-    color: #FF5733; /* o cualquier color destacado */
-  }
-  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  max-width: 700px;
+  padding: 30px;
+  background: #ecdfd5;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+#emocion-contenido h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+#emocion-contenido h2 {
+  font-size: 40px;
+  color: #c23e21;
+  margin-bottom: 15px;
+}
+
+#emocion-contenido h3 {
+  font-size: 24px;
+  color: #555;
+  margin-bottom: 30px;
+  font-style: italic;
+}
+
+/* Contenedor del botón alineado a la derecha */
+#emocion-contenido .boton-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Estilo del botón */
+#btn-continuar {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 14px 32px;
+  font-size: 18px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #FF5733, #FF8D1A);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+}
+
+#btn-continuar:hover {
+  background: linear-gradient(135deg, #e64e2f, #ff9a33);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+}

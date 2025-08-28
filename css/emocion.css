@@ -1,0 +1,18 @@
+#emocion-contenido {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+  #emocion-contenido h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+  
+  #emocion-contenido h2 {
+    font-size: 36px;
+    color: #FF5733; /* o cualquier color destacado */
+  }
+  

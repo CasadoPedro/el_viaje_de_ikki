@@ -1,0 +1,51 @@
+/* Contenido principal centrado */
+#debate-contenido {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+  /* Título principal */
+  #debate-contenido h1 {
+    font-size: 42px;
+    margin-bottom: 20px;
+    color: #2c3e50;
+  }
+  
+  /* Subtítulo (derecho del niño) */
+  #debate-contenido h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: #27ae60; /* verde para diferenciar de emoción */
+  }
+  
+  /* Preguntas */
+  #debate-contenido .preguntas h3 {
+    font-size: 22px;
+    margin: 15px 0;
+    color: #34495e;
+  }
+  
+  /* Botón continuar */
+  #btn-continuar {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 14px 26px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    background: #27ae60;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  #btn-continuar:hover {
+    background: #219150;
+    transform: scale(1.05);
+  }
+  

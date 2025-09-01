@@ -1,7 +1,7 @@
 import Equipo from "./equipo.js"; 
 import Tablero from "./tablero.js"; 
 // import { girarRuleta } from "./ruleta.js"; // asumo que ruleta.js tiene esto 
-const colores = ["#FF5733", "#33B5FF", "#FF33A8", "#33FF57"]; // colores para cada equipo
+const colores = ["#FAB858", "#283583", "#AF0D1E", "#EF80B1"]; // colores para cada equipo
 
 class Juego {
   constructor(cantidadEquipos) {

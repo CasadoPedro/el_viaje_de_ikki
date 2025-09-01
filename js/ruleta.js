@@ -1,201 +1,265 @@
-  const sectors = [
-    { color: "#A19C9C", text: "#333333", label: "1" },
-    { color: "#EDEDED", text: "#333333", label: "2" },
-    { color: "#A19C9C", text: "#333333", label: "3" },
-    { color: "#EDEDED", text: "#333333", label: "4" },
-    { color: "#A19C9C", text: "#333333", label: "5" },
-    { color: "#EDEDED", text: "#333333", label: "6" },
-  ];
-  
-  const events = {
-    listeners: {},
-    addListener: function (eventName, fn) {
-      this.listeners[eventName] = this.listeners[eventName] || [];
-      this.listeners[eventName].push(fn);
-    },
-    fire: function (eventName, ...args) {
-      if (this.listeners[eventName]) {
-        for (let fn of this.listeners[eventName]) {
-          fn(...args);
-        }
+const sectors = [
+  { color: "#A19C9C", text: "#333333", label: "1" },
+  { color: "#EDEDED", text: "#333333", label: "2" },
+  { color: "#A19C9C", text: "#333333", label: "3" },
+  { color: "#EDEDED", text: "#333333", label: "4" },
+  { color: "#A19C9C", text: "#333333", label: "5" },
+  { color: "#EDEDED", text: "#333333", label: "6" },
+];
+
+const events = {
+  listeners: {},
+  addListener: function (eventName, fn) {
+    this.listeners[eventName] = this.listeners[eventName] || [];
+    this.listeners[eventName].push(fn);
+  },
+  fire: function (eventName, ...args) {
+    if (this.listeners[eventName]) {
+      for (let fn of this.listeners[eventName]) {
+        fn(...args);
       }
-    },
-  };
-  
-  const rand = (m, M) => Math.random() * (M - m) + m;
-  const tot = sectors.length;
-  const spinEl = document.querySelector("#spin");
-  const ctx = document.querySelector("#wheel").getContext("2d");
-  const dia = ctx.canvas.width;
-  const rad = dia / 2;
-  const PI = Math.PI;
-  const TAU = 2 * PI;
-  const arc = TAU / sectors.length;
-  
-  const friction = 0.98; // 0.995=soft, 0.99=mid, 0.98=hard
-  let angVel = 0; // Angular velocity
-  let ang = 0; // Angle in radians
-  
-  let spinButtonClicked = false;
-  
-  const getIndex = () => Math.floor(tot - (ang / TAU) * tot) % tot;
-  
-  function drawSector(sector, i) {
-    const ang = arc * i;
-    ctx.save();
-  
-    // COLOR
-    ctx.beginPath();
-    ctx.fillStyle = sector.color;
-    ctx.moveTo(rad, rad);
-    ctx.arc(rad, rad, rad, ang, ang + arc);
-    ctx.lineTo(rad, rad);
-    ctx.fill();
-
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 1;
-    ctx.stroke();
-  
-    // TEXT
-    ctx.translate(rad, rad);
-    ctx.rotate(ang + arc / 2);
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = sector.text;
-    ctx.font = "bold 40px 'Montserrat', sans-serif";
-    ctx.fillText(sector.label, rad / 1.3, 0);
-
-    //
-  
-    ctx.restore();
-  }
-  
-  function rotate() {
-    const sector = sectors[getIndex()];
-    ctx.canvas.style.transform = `rotate(${ang - PI / 2}rad)`;
-  
-    spinEl.textContent = !angVel ? "GIRAR" : sector.label;
-    spinEl.style.background = sector.color;
-    spinEl.style.color = sector.text;
-  }
-  
-  function frame() {
-    // Fire an event after the wheel has stopped spinning
-    if (!angVel && spinButtonClicked) {
-      const finalSector = sectors[getIndex()];
-      events.fire("spinEnd", finalSector);
-      spinButtonClicked = false; // reset the flag
-      return;
     }
-  
-    angVel *= friction; // Decrement velocity by friction
-    if (angVel < 0.002) angVel = 0; // Bring to stop
-    ang += angVel; // Update angle
-    ang %= TAU; // Normalize angle
-    rotate();
+  },
+};
+
+const rand = (m, M) => Math.random() * (M - m) + m;
+const tot = sectors.length;
+const spinEl = document.querySelector("#spin");
+const ctx = document.querySelector("#wheel").getContext("2d");
+const dia = ctx.canvas.width;
+const rad = dia / 2;
+const PI = Math.PI;
+const TAU = 2 * PI;
+const arc = TAU / sectors.length;
+
+const friction = 0.98; // 0.995=soft, 0.99=mid, 0.98=hard
+let angVel = 0; // Angular velocity
+let ang = 0; // Angle in radians
+
+let spinButtonClicked = false;
+
+const getIndex = () => Math.floor(tot - (ang / TAU) * tot) % tot;
+
+function drawSector(sector, i) {
+  const ang = arc * i;
+  ctx.save();
+
+  // COLOR
+  ctx.beginPath();
+  ctx.fillStyle = sector.color;
+  ctx.moveTo(rad, rad);
+  ctx.arc(rad, rad, rad, ang, ang + arc);
+  ctx.lineTo(rad, rad);
+  ctx.fill();
+
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  // TEXT
+  ctx.translate(rad, rad);
+  ctx.rotate(ang + arc / 2);
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = sector.text;
+  ctx.font = "bold 40px 'Montserrat', sans-serif";
+  ctx.fillText(sector.label, rad / 1.3, 0);
+
+  //
+
+  ctx.restore();
+}
+
+function rotate() {
+  const sector = sectors[getIndex()];
+  ctx.canvas.style.transform = `rotate(${ang - PI / 2}rad)`;
+
+  spinEl.textContent = !angVel ? "GIRAR" : sector.label;
+  spinEl.style.background = sector.color;
+  spinEl.style.color = sector.text;
+}
+
+function frame() {
+  // Fire an event after the wheel has stopped spinning
+  if (!angVel && spinButtonClicked) {
+    const finalSector = sectors[getIndex()];
+    events.fire("spinEnd", finalSector);
+    spinButtonClicked = false; // reset the flag
+    return;
   }
-  
-  function engine() {
-    frame();
-    requestAnimationFrame(engine);
-  }
-  
-  function init() {
-    sectors.forEach(drawSector);
-    rotate(); // Initial rotation
-    engine(); // Start engine
-    spinEl.addEventListener("click", () => {
-      if (!angVel) angVel = rand(0.25, 0.45);
-      spinButtonClicked = true;
-    });
-  }
-  
-  init();
-  
-  import Juego from "./juego.js";
-  // Recuperamos el juego de sessionStorage
-  let juegoData = JSON.parse(sessionStorage.getItem("juego"));
-  if (!juegoData) {
-    // Si no hay juego, redirigimos al index (seguridad)
-    window.location.href = "index.html";
-  }
-  let juego = Juego.fromJSON(juegoData);
-  console.log("Juego reconstruido:", juego);
-  const turnoDiv = document.getElementsByClassName("turnoActual")[0];
-  // Función para actualizar el indicador
-  import { actualizarTurno } from "./utils.js";
-  
-  // Llamamos al principio después de reconstruir el juego
-  actualizarTurno(juego, turnoDiv);
-  
 
-  const modal = document.getElementById("modal-avance");
-  const textoAvance = document.getElementById("texto-avance");
-  const btnContinuar = document.getElementById("btn-continuar");
-  
-  events.addListener("spinEnd", (sector) => {
+  angVel *= friction; // Decrement velocity by friction
+  if (angVel < 0.002) angVel = 0; // Bring to stop
+  ang += angVel; // Update angle
+  ang %= TAU; // Normalize angle
+  rotate();
+}
 
-    // Equipo actual
-    const equipo = juego.equipos[juego.turnoActual];
+function engine() {
+  frame();
+  requestAnimationFrame(engine);
+}
 
-    // Posición final tentativa
-    const resultado = parseInt(sector.label, 10);
-    const nuevaPos = (equipo.posicion || 0) + resultado;
-
-    // Bloqueamos el spin hasta continuar
-    spinEl.disabled = true;
-
-    // Mostramos modal
-    textoAvance.textContent = `Avanzar al casillero ${nuevaPos}`;
-    modal.style.display = "flex";
-
-    // Guardamos en el equipo la próxima posición (sin mover todavía)
-    equipo.proximaPosicion = nuevaPos;
+function init() {
+  sectors.forEach(drawSector);
+  rotate(); // Initial rotation
+  engine(); // Start engine
+  spinEl.addEventListener("click", () => {
+    if (!angVel) angVel = rand(0.25, 0.45);
+    spinButtonClicked = true;
   });
+}
 
-  btnContinuar.addEventListener("click", () => {
-    modal.style.display = "none";
-    spinEl.disabled = false;
+init();
+
+import Juego from "./juego.js";
+// Recuperamos el juego de sessionStorage
+let juegoData = JSON.parse(sessionStorage.getItem("juego"));
+if (!juegoData) {
+  // Si no hay juego, redirigimos al index (seguridad)
+  window.location.href = "index.html";
+}
+let juego = Juego.fromJSON(juegoData);
+console.log("Juego reconstruido:", juego);
+const turnoDiv = document.getElementsByClassName("turnoActual")[0];
+// Función para actualizar el indicador
+import { actualizarTurno } from "./utils.js";
+
+// Llamamos al principio después de reconstruir el juego
+actualizarTurno(juego, turnoDiv);
+
+
+const modal = document.getElementById("modal-avance");
+const textoAvance = document.getElementById("texto-avance");
+const btnContinuar = document.getElementById("btn-continuar");
+
+events.addListener("spinEnd", (sector) => {
+
+  // Equipo actual
+  const equipo = juego.equipos[juego.turnoActual];
+
+  // Posición final tentativa
+  const resultado = parseInt(sector.label, 10);
+  const nuevaPos = (equipo.posicion || 0) + resultado;
+
+  // Bloqueamos el spin hasta continuar
+  spinEl.disabled = true;
+
+  // Mostramos modal
+  textoAvance.textContent = `Avanzar al casillero ${nuevaPos}`;
+  modal.style.display = "flex";
+
+  // Guardamos en el equipo la próxima posición (sin mover todavía)
+  equipo.proximaPosicion = nuevaPos;
+});
+
+btnContinuar.addEventListener("click", () => {
+  modal.style.display = "none";
+  spinEl.disabled = false;
+
+  // Equipo actual
+  const equipo = juego.equipos[juego.turnoActual];
+
+  const origen = equipo.posicion || 0;
+  const destino = equipo.proximaPosicion;
+
+  // Mover al equipo
+  equipo.mover(destino - origen);
+
+
+  // Referencias al modal
+  const modalRecompensa = document.getElementById("modalRecompensa");
+  const btnRecompensaContinuar = document.getElementById("btnRecompensaContinuar");
+
+  if (juego.tablero.hayRegaloEntre(origen, destino)) {
+    const { fraseAnterior, fraseActualizada, jeroglificos } = equipo.revelarJeroglifico();
   
-    // Equipo actual
-    const equipo = juego.equipos[juego.turnoActual];
+    if (fraseAnterior === fraseActualizada) {
+      alert("Pasaste por una casilla de Regalo, pero ya no quedan jeroglíficos por revelar.");
+    } else {
+      mostrarRecompensa(fraseAnterior, fraseActualizada, jeroglificos);
   
-    const origen = equipo.posicion || 0;
-    const destino = equipo.proximaPosicion;
+      btnRecompensaContinuar.onclick = () => {
+        modalRecompensa.style.display = "none";
+        spinEl.disabled = false;
+        resolverCasillaFinal(destino, equipo);
+      };
   
-    // Mover al equipo
-    equipo.mover(destino - origen);
-  
-    // Si pasó por un casillero de Regalo
-    if (juego.tablero.hayRegaloEntre(origen, destino)) {
-      const { jeroglifico, fraseAnterior, fraseActualizada } = equipo.revelarJeroglifico();
-      alert(
-        `Pasaste por una casilla de Regalo.\n` +
-        `Ganaste un jeroglífico: ${jeroglifico}\n\n` +
-        `Antes: ${fraseAnterior}\n` +
-        `Ahora: ${fraseActualizada}`
-      );
+      return; // detenemos flujo hasta que presione continuar
     }
-    
-    // Información del casillero final
-    const casillaFinal = juego.tablero.casillas[destino - 1]; // -1 porque el array es 0-indexed
+  }
+  
+
+  // Si no hubo regalo, resolvemos directamente
+  resolverCasillaFinal(destino, equipo);
+
+
+  // ----------------------
+  // Función auxiliar ordenada
+  // ----------------------
+  function resolverCasillaFinal(destino, equipo) {
+    const casillaFinal = juego.tablero.casillas[destino - 1]; // -1 porque es 0-indexed
     console.log(`El equipo ${equipo.nombre} se movió del casillero ${origen} al ${destino}`);
     console.log(`Casillero final:`, casillaFinal);
     console.log(`El equipo cayó en un casillero de tipo: ${casillaFinal.efecto}`);
-    // Guardamos el estado actualizado en sessionStorage antes de ir a otra página
+
+    // Guardamos estado antes de cualquier redirección o cambio de turno
     sessionStorage.setItem("juego", JSON.stringify(juego));
 
-    if (casillaFinal.efecto === "Emoción") {
-      // Redirigimos a emocion.html
-      window.location.href = "emocion.html";
+    switch (casillaFinal.efecto) {
+      case "Emoción":
+        window.location.href = "emocion.html";
+        break;
+      case "Dialogo":
+        window.location.href = "dialogo.html";
+        break;
+      case "Debate":
+        window.location.href = "debate.html";
+        break;
+      case "Sin efecto":
+      case "Regalo":
+        // Casilla normal o regalo ya procesado → pasar turno
+        juego.turnoActual = (juego.turnoActual + 1) % juego.equipos.length;
+        actualizarTurno(juego, turnoDiv);
+        sessionStorage.setItem("juego", JSON.stringify(juego));
+        break;
     }
-    
-    // Pasar turno
-    juego.turnoActual = (juego.turnoActual + 1) % juego.equipos.length;
-    actualizarTurno(juego, turnoDiv);
+  }
+  function mostrarRecompensa(fraseAnterior, fraseNueva, jeroglificos) {
+    const jeroglificosGanados = document.getElementById("jeroglificosGanados");
+    const fraseAnimada = document.getElementById("fraseAnimada");
+    // Texto de los jeroglíficos ganados
+    if (jeroglificos && jeroglificos.length > 0) {
+      jeroglificosGanados.textContent = 
+        "Ganaste: " + jeroglificos.join(", ");
+    } else {
+      jeroglificosGanados.textContent = "No hay jeroglíficos nuevos.";
+    }
   
-    // Guardamos el estado actualizado en sessionStorage
-    sessionStorage.setItem("juego", JSON.stringify(juego));
-  });  
+    // Animación de la frase
+    fraseAnimada.textContent = fraseAnterior;
+    modalRecompensa.style.display = "flex";
+  
+    let i = 0;
+    const intervalo = setInterval(() => {
+      if (i >= fraseNueva.length) {
+        clearInterval(intervalo);
+        return;
+      }
+      let actual = "";
+      for (let j = 0; j < fraseNueva.length; j++) {
+        if (j <= i) {
+          actual += fraseNueva[j];
+        } else {
+          actual += fraseAnimada.textContent[j] || " ";
+        }
+      }
+      fraseAnimada.textContent = actual;
+      i++;
+    }, 120);
+  }
+  
 
-  
+
+});  
+

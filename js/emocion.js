@@ -5,16 +5,16 @@ let juegoData = JSON.parse(sessionStorage.getItem("juego"));
 if (!juegoData) window.location.href = "index.html";
 let juego = Juego.fromJSON(juegoData);
 
-console.log("Juego reconstruido:", juego);
-
 const turnoDiv = document.querySelector(".turnoActual");
 actualizarTurno(juego, turnoDiv);
 
 const equipo = juego.equipos[juego.turnoActual];
 const posicion = equipo.posicion || 0;
 
-let emocion = "Desconocida";
+console.log("Juego reconstruido:", juego);
+console.log("Turno actual:", juego.turnoActual, "Equipo:", equipo.nombre, "Posición:", posicion);
 
+let emocion = "Desconocida";
 const zona = juego.tablero.zonas.find(z => posicion >= z.inicio && posicion <= z.fin);
 
 console.log(`El equipo ${equipo.nombre} está en un casillero de emoción: ${zona.emocion}`); 

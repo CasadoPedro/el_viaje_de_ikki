@@ -1,0 +1,70 @@
+/* dialogo.css */
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+    margin: 0;
+    padding: 0;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* Contenedor principal */
+  #dialogo-contenido {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Indicador de turno */
+  .turnoActual {
+    margin: 20px auto;
+    padding: 10px 20px;
+    background: #1976d2;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    width: fit-content;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Pregunta */
+  #pregunta {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 20px 0;
+    color: #444;
+    line-height: 1.5;
+  }
+  
+  /* Botón */
+  #btn-continuar {
+    margin: 20px auto 40px auto;
+    padding: 12px 28px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: #42a5f5;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: block;
+  }
+  
+  #btn-continuar:hover {
+    background: #1e88e5;
+    transform: translateY(-2px);
+  }
+  
+  #btn-continuar:active {
+    transform: translateY(0);
+  }
+  

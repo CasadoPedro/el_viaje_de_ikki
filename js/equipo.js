@@ -20,48 +20,59 @@ class Equipo {
     return { origen, destino: this.posicion }; 
   }
 
-  // Obtiene un jeroglifico (letra) que no se haya revelado todavía
+  // Obtiene una letra aún no revelada de la frase
   obtenerJeroglificoDisponible() {
-    // todas las letras únicas de la frase
-    const letrasUnicas = [...new Set(this.frase.toUpperCase().match(/[A-ZÁÉÍÓÚÑ]/gi))];
-    // filtramos las que ya se dieron
+    // Tomamos las letras tal cual aparecen (con tildes incluidas)
+    const letrasUnicas = [
+      ...new Set(this.frase.match(/[A-Za-zÁÉÍÓÚÑáéíóúñ]/g))
+    ].map(l => l.toUpperCase());
+
     const disponibles = letrasUnicas.filter(l => !this.jeroglificos.includes(l));
-    if (disponibles.length === 0) return null; // ya no quedan
-    // elegimos una al azar
+    if (disponibles.length === 0) return null;
+
     const indice = Math.floor(Math.random() * disponibles.length);
     return disponibles[indice];
   }
 
-  // Revela un jeroglifico en la frase y devuelve previo/actualizado
+  // Revela uno o más jeroglíficos según la posición
   revelarJeroglifico() {
-    const fraseAnterior = this.fraseDescubierta;
-    const jeroglifico = this.obtenerJeroglificoDisponible();
-    if (!jeroglifico) {
-      return { fraseAnterior, fraseActualizada: this.fraseDescubierta, jeroglifico: null };
-    }
+    const cantidad = this.posicion < 30 ? 1 : 2;  // regla
+    const revelados = [];
 
-    this.jeroglificos.push(jeroglifico);
+    let fraseAnterior = this.fraseDescubierta;
+    let fraseActualizada = this.fraseDescubierta;
 
-    // Construimos nueva frase revelando las ocurrencias
-    let nueva = "";
-    for (let i = 0; i < this.frase.length; i++) {
-      const original = this.frase[i];
-      if (
-        original.toUpperCase() === jeroglifico ||
-        this.jeroglificos.includes(original.toUpperCase())
-      ) {
-        nueva += original; // mostramos la letra original (con acentos si los tenía)
-      } else if (/[A-Za-zÁÉÍÓÚÑ]/.test(original)) {
-        nueva += "_";
-      } else {
-        nueva += original; // espacios, comas, etc.
+    for (let i = 0; i < cantidad; i++) {
+      const jeroglifico = this.obtenerJeroglificoDisponible();
+      if (!jeroglifico) break;
+
+      this.jeroglificos.push(jeroglifico);
+
+      let nueva = "";
+      for (let j = 0; j < this.frase.length; j++) {
+        const original = this.frase[j];
+        const originalUpper = original.toUpperCase();
+
+        if (
+          originalUpper === jeroglifico ||
+          this.jeroglificos.includes(originalUpper)
+        ) {
+          nueva += original;
+        } else if (/[A-Za-zÁÉÍÓÚÑáéíóúñ]/.test(original)) {
+          nueva += "_";
+        } else {
+          nueva += original;
+        }
       }
+
+      fraseActualizada = nueva;
+      this.fraseDescubierta = nueva;
+      revelados.push(jeroglifico);
     }
 
-    this.fraseDescubierta = nueva;
-
-    return { fraseAnterior, fraseActualizada: nueva, jeroglifico };
+    return { fraseAnterior, fraseActualizada, jeroglificos: revelados };
   }
+
 
   static fromJSON(data) {
     let equipo = new Equipo(data.nombre, data.frase);

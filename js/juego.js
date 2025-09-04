@@ -1,7 +1,7 @@
 import Equipo from "./equipo.js"; 
 import Tablero from "./tablero.js"; 
 // import { girarRuleta } from "./ruleta.js"; // asumo que ruleta.js tiene esto 
-const colores = ["#FAB858", "#283583", "#AF0D1E", "#EF80B1"]; // colores para cada equipo
+const colores = ["#CB7C06", "#283583", "#AF0D1E", "#EF80B1", "#27AA5E"]; // colores para cada equipo
 
 class Juego {
   constructor(cantidadEquipos) {
@@ -16,10 +16,12 @@ class Juego {
 
   crearEquipos(cantidad) {
     const frasesDummy = [
-      "Igualdad sin discriminación",
-      "Nombre y nacionalidad",
-      "Derecho a una familia",
-      "Tenemos derecho a ser escuchados"
+      "IGUALDAD SIN DISCRIMINACIÓN",
+      "DERECHO A LA EDUCACIÓN",
+      "DERECHO A LA SALUD",
+      "NOMBRE Y NACIONALIDAD",
+      "DERECHO A UNA FAMILIA",
+      "TENEMOS DERECHO A SER ESCUCHADOS"
     ];
 
     return Array.from({ length: cantidad }, (_, i) => {

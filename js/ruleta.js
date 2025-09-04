@@ -1,10 +1,10 @@
 const sectors = [
-  { color: "#A19C9C", text: "#333333", label: "1" },
-  { color: "#EDEDED", text: "#333333", label: "2" },
-  { color: "#A19C9C", text: "#333333", label: "3" },
-  { color: "#EDEDED", text: "#333333", label: "4" },
-  { color: "#A19C9C", text: "#333333", label: "5" },
-  { color: "#EDEDED", text: "#333333", label: "6" },
+  { color: "#BF2819", text: "#FFFFFF", label: "1" },
+  { color: "#000000", text: "#FFFFFF", label: "2" },
+  { color: "#BF2819", text: "#FFFFFF", label: "3" },
+  { color: "#000000", text: "#FFFFFF", label: "4" },
+  { color: "#BF2819", text: "#FFFFFF", label: "5" },
+  { color: "#000000", text: "#FFFFFF", label: "6" },
 ];
 
 const events = {
@@ -52,7 +52,7 @@ function drawSector(sector, i) {
   ctx.lineTo(rad, rad);
   ctx.fill();
 
-  ctx.strokeStyle = "black";
+  ctx.strokeStyle = "white";
   ctx.lineWidth = 1;
   ctx.stroke();
 
@@ -78,7 +78,8 @@ function rotate() {
   spinEl.style.background = sector.color;
   spinEl.style.color = sector.text;
 }
-
+let currentIndex = getIndex();
+const wheelSound = new Audio("../sounds/wheelSound-Click.mp3");
 function frame() {
   // Fire an event after the wheel has stopped spinning
   if (!angVel && spinButtonClicked) {
@@ -93,6 +94,13 @@ function frame() {
   ang += angVel; // Update angle
   ang %= TAU; // Normalize angle
   rotate();
+  // Detectar cambio de sector para el sonido
+  const newIndex = getIndex();
+  if (newIndex !== currentIndex) {
+    wheelSound.currentTime = 0; // reinicia el sonido
+    wheelSound.play();
+    currentIndex = newIndex;
+  }
 }
 
 function engine() {

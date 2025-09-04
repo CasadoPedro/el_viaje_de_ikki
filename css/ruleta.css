@@ -10,9 +10,9 @@
     place-items: center;
     margin: 0;
     height: 100vh;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb, #a18cd1, #fbc2eb, #f6d365, #fda085, #84fab0, #8fd3f4);
+    /*background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb, #a18cd1, #fbc2eb, #f6d365, #fda085, #84fab0, #8fd3f4);*/
   }
-  
+
   #spin_the_wheel {
     display: inline-block;
     position: relative;

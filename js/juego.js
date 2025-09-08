@@ -16,11 +16,6 @@ class Juego {
 
   crearEquipos(cantidad) {
     const frasesDummy = [
-      "IGUALDAD SIN DISCRIMINACIÓN",
-      "DERECHO A LA EDUCACIÓN",
-      "DERECHO A LA SALUD",
-      "NOMBRE Y NACIONALIDAD",
-      "DERECHO A UNA FAMILIA",
       "TENEMOS DERECHO A SER ESCUCHADOS"
     ];
 

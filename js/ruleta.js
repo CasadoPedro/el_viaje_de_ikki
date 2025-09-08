@@ -1,9 +1,9 @@
 const sectors = [
-  { color: "#BF2819", text: "#FFFFFF", label: "1" },
+  { color: "#ffffff", text: "#000000", label: "1" },
   { color: "#000000", text: "#FFFFFF", label: "2" },
-  { color: "#BF2819", text: "#FFFFFF", label: "3" },
+  { color: "#ffffff", text: "#000000", label: "3" },
   { color: "#000000", text: "#FFFFFF", label: "4" },
-  { color: "#BF2819", text: "#FFFFFF", label: "5" },
+  { color: "#ffffff", text: "#000000", label: "5" },
   { color: "#000000", text: "#FFFFFF", label: "6" },
 ];
 
@@ -52,7 +52,7 @@ function drawSector(sector, i) {
   ctx.lineTo(rad, rad);
   ctx.fill();
 
-  ctx.strokeStyle = "white";
+  ctx.strokeStyle = "black";
   ctx.lineWidth = 1;
   ctx.stroke();
 
@@ -74,9 +74,9 @@ function rotate() {
   const sector = sectors[getIndex()];
   ctx.canvas.style.transform = `rotate(${ang - PI / 2}rad)`;
 
-  spinEl.textContent = !angVel ? "GIRAR" : sector.label;
-  spinEl.style.background = sector.color;
-  spinEl.style.color = sector.text;
+  // Escribimos texto en el botón de girar
+  const spinText = document.getElementById("spinText");
+  spinText.textContent = !angVel ? "GIRAR" : sector.label;
 }
 let currentIndex = getIndex();
 const wheelSound = new Audio("../sounds/wheelSound-Click.mp3");
@@ -197,7 +197,6 @@ btnContinuar.addEventListener("click", () => {
     }
   }
   
-
   // Si no hubo regalo, resolvemos directamente
   resolverCasillaFinal(destino, equipo);
 
@@ -209,7 +208,7 @@ btnContinuar.addEventListener("click", () => {
     const casillaFinal = juego.tablero.casillas[destino - 1]; // -1 porque es 0-indexed
     console.log(`El equipo ${equipo.nombre} se movió del casillero ${origen} al ${destino}`);
     console.log(`Casillero final:`, casillaFinal);
-    console.log(`El equipo cayó en un casillero de tipo: ${casillaFinal.efecto}`);
+    console.log(`El equipo ${equipo.nombre} cayó en un casillero de tipo: ${casillaFinal.efecto}`);
 
     // Guardamos estado antes de cualquier redirección o cambio de turno
     sessionStorage.setItem("juego", JSON.stringify(juego));
@@ -224,9 +223,13 @@ btnContinuar.addEventListener("click", () => {
       case "Debate":
         window.location.href = "debate.html";
         break;
-      case "Sin efecto":
+      case "Cuento":
       case "Regalo":
-        // Casilla normal o regalo ya procesado → pasar turno
+        juego.turnoActual = (juego.turnoActual + 1) % juego.equipos.length;
+        actualizarTurno(juego, turnoDiv);
+        sessionStorage.setItem("juego", JSON.stringify(juego));
+        break;
+      case "Sin efecto":
         juego.turnoActual = (juego.turnoActual + 1) % juego.equipos.length;
         actualizarTurno(juego, turnoDiv);
         sessionStorage.setItem("juego", JSON.stringify(juego));
@@ -236,16 +239,23 @@ btnContinuar.addEventListener("click", () => {
   function mostrarRecompensa(fraseAnterior, fraseNueva, jeroglificos) {
     const jeroglificosGanados = document.getElementById("jeroglificosGanados");
     const fraseAnimada = document.getElementById("fraseAnimada");
-    // Texto de los jeroglíficos ganados
+  
+    // --- Mostrar jeroglíficos ganados ---
     if (jeroglificos && jeroglificos.length > 0) {
-      jeroglificosGanados.textContent = 
-        "Ganaste: " + jeroglificos.join(", ");
+      jeroglificosGanados.innerHTML =
+        "Ganaste: " +
+        jeroglificos
+          .map(
+            (l) =>
+              `<img src="visualAssets/jeroglificos/${l.toUpperCase()}.png" alt="${l}" class="jeroglifico-img">`
+          )
+          .join(" ");
     } else {
       jeroglificosGanados.textContent = "No hay jeroglíficos nuevos.";
     }
   
-    // Animación de la frase
-    fraseAnimada.textContent = fraseAnterior;
+    // --- Mostrar frase con imágenes ---
+    fraseAnimada.innerHTML = convertirFraseAImagenes(fraseAnterior);
     modalRecompensa.style.display = "flex";
   
     let i = 0;
@@ -254,20 +264,38 @@ btnContinuar.addEventListener("click", () => {
         clearInterval(intervalo);
         return;
       }
+  
+      // Construir frase parcialmente descubierta
       let actual = "";
       for (let j = 0; j < fraseNueva.length; j++) {
         if (j <= i) {
-          actual += fraseNueva[j];
+          actual += letraAImagen(fraseNueva[j]);
         } else {
-          actual += fraseAnimada.textContent[j] || " ";
+          actual += letraAImagen(fraseAnterior[j] || " ");
         }
       }
-      fraseAnimada.textContent = actual;
+  
+      fraseAnimada.innerHTML = actual;
       i++;
-    }, 120);
+    }, 200);
   }
   
-
-
+  // Convierte toda una frase a imágenes
+  function convertirFraseAImagenes(frase) {
+    return frase
+      .split("")
+      .map((c) => letraAImagen(c))
+      .join("");
+  }
+  
+  // Convierte un carácter a imagen si es letra, o lo deja como está si no
+  function letraAImagen(char) {
+    if (/[A-Za-zÁÉÍÓÚÑ]/.test(char)) {
+      return `<img src="visualAssets/jeroglificos/${char.toUpperCase()}.png" alt="${char}" class="jeroglifico-frase">`;
+    }
+    return char; // espacios, signos, etc.
+  }
+  
+  
 });  
 

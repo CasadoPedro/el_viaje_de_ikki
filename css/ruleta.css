@@ -39,12 +39,15 @@
     height: 30%;
     margin: -15%;
     background: #fff;
-    color: #fff;
+    color: #B31E1E;
     box-shadow:
       0 0 0 8px currentColor,
       0 0px 15px 5px rgba(0, 0, 0, 0.6);
     border-radius: 50%;
     transition: 0.8s;
+  }
+  #spinText {
+    color: #000;
   }
   
   #spin::after {
@@ -203,4 +206,20 @@
 
 #btnRecompensaContinuar:hover {
   background: #005fcc;
+}
+
+/* Imagen de jeroglífico individual ganado */
+.jeroglifico-img {
+  width: 35px;
+  height: 35px;
+  margin: 0 4px;
+  vertical-align: middle;
+}
+
+/* Imagen de jeroglífico dentro de la frase */
+.jeroglifico-frase {
+  width: 25px;
+  height: 25px;
+  margin: 0 2px;
+  vertical-align: middle;
 }

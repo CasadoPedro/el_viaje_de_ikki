@@ -4,6 +4,14 @@ import Juego from "./juego.js";
 const select = document.getElementById("equipoSelect");
 const btn = document.getElementById("startBtn");
 
+// Mostrar logo unos segundos y luego el contenido
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("splash").style.display = "none";
+    document.getElementById("mainContent").style.display = "flex";
+  }, 4000); // 4 segundos
+});
+
 select.addEventListener("change", () => {
   btn.disabled = select.value === "";
 });

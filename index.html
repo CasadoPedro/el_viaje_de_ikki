@@ -12,17 +12,24 @@
   <link rel="stylesheet" href="css/index.css" />
 </head>
 <body>
-  <h1>¡BIENVENIDOS!</h1>
-  <p>INGRESE LA CANTIDAD DE EQUIPOS</p>
-  <select id="equipoSelect">
-    <option value="">SELECCIONE...</option>
-    <option value="2">2 EQUIPOS</option>
-    <option value="3">3 EQUIPOS</option>
-    <option value="4">4 EQUIPOS</option>
-    <option value="5">5 EQUIPOS</option>
-  </select>
-  <button id="startBtn" disabled>INICIAR</button>
+  <!-- Pantalla de carga con el logo -->
+  <div id="splash">
+    <img src="./visualAssets/logo.png" alt="Logo" />
+  </div>
 
+  <!-- Contenido principal oculto al inicio -->
+  <div id="mainContent" style="display: none;">
+    <h1>¡BIENVENIDOS!</h1>
+    <p>INGRESE LA CANTIDAD DE EQUIPOS</p>
+    <select id="equipoSelect">
+      <option value="">SELECCIONE...</option>
+      <option value="2">2 EQUIPOS</option>
+      <option value="3">3 EQUIPOS</option>
+      <option value="4">4 EQUIPOS</option>
+      <option value="5">5 EQUIPOS</option>
+    </select>
+    <button id="startBtn" disabled>INICIAR</button>
+  </div>
   <!-- JS separado -->
   <script type="module" src="./js/index.js"></script>
 

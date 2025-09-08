@@ -79,7 +79,7 @@ function rotate() {
   spinText.textContent = !angVel ? "GIRAR" : sector.label;
 }
 let currentIndex = getIndex();
-const wheelSound = new Audio("../sounds/wheelSound-Click.mp3");
+const wheelSound = new Audio("sounds/wheelSound-Click.mp3");
 function frame() {
   // Fire an event after the wheel has stopped spinning
   if (!angVel && spinButtonClicked) {

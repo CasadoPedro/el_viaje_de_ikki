@@ -224,6 +224,8 @@ btnContinuar.addEventListener("click", () => {
         window.location.href = "debate.html";
         break;
       case "Cuento":
+        window.location.href = "cuento.html";
+        break;
       case "Regalo":
         juego.turnoActual = (juego.turnoActual + 1) % juego.equipos.length;
         actualizarTurno(juego, turnoDiv);

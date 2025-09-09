@@ -37,8 +37,12 @@ btnIntroContinuar.addEventListener("click", () => {
 opciones.forEach(img => {
   img.addEventListener("click", () => {
     if (img.dataset.opcion === opcionCorrecta) {
-      alert("¡Respuesta correcta!");
-      btnVolver.style.display = "inline-block";
+      // Guardamos estado antes de redirigir
+      juego.turnoActual = (juego.turnoActual + 1) % juego.equipos.length;
+      sessionStorage.setItem("juego", JSON.stringify(juego));
+    
+      // Redirigir a ikki.html
+      window.location.href = "ikki.html";
     } else {
       // Mostrar modal incorrecto
       modalIncorrecto.style.display = "flex";

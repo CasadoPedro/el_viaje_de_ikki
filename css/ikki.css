@@ -1,0 +1,29 @@
+#ikki-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+  }
+  
+  #ikki-main h1 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #333;
+  }
+  
+  #scanner-area {
+    width: 80%;
+    max-width: 600px;
+    height: 400px;
+    background: #eee;
+    border: 3px dashed #999;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    color: #555;
+  }
+  

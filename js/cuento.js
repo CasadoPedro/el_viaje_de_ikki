@@ -1,17 +1,6 @@
-import Juego from "./juego.js";
-import { actualizarTurno } from "./utils.js";
+import { iniciarPagina } from "./utils.js";
 
-// Recuperamos el juego
-let juegoData = JSON.parse(sessionStorage.getItem("juego"));
-if (!juegoData) {
-  window.location.href = "index.html"; // seguridad
-}
-let juego = Juego.fromJSON(juegoData);
-console.log("Juego reconstruido:", juego);
-
-// Mostramos turno
-const turnoDiv = document.getElementsByClassName("turnoActual")[0];
-actualizarTurno(juego, turnoDiv);
+let juego = iniciarPagina();
 
 // Referencias DOM
 const introCuento = document.getElementById("intro-cuento");
@@ -38,7 +27,7 @@ opciones.forEach(img => {
   img.addEventListener("click", () => {
     if (img.dataset.opcion === opcionCorrecta) {
       // Guardamos estado antes de redirigir
-      juego.turnoActual = (juego.turnoActual + 1) % juego.equipos.length;
+      juego.siguienteTurno();
       sessionStorage.setItem("juego", JSON.stringify(juego));
     
       // Redirigir a ikki.html
@@ -58,10 +47,10 @@ btnIncorrectoContinuar.addEventListener("click", () => {
   const equipo = juego.equipos[juego.turnoActual];
   const posicionActual = equipo.posicion;
   const nuevaPos = posicionActual - 2;
-  equipo.mover(nuevaPos - posicionActual);
+  equipo.posicion = nuevaPos;
 
   // Pasar turno
-  juego.turnoActual = (juego.turnoActual + 1) % juego.equipos.length;
+  juego.siguienteTurno();
 
   // Guardar
   sessionStorage.setItem("juego", JSON.stringify(juego));
@@ -72,7 +61,7 @@ btnIncorrectoContinuar.addEventListener("click", () => {
 
 // Caso correcto → volver normalmente
 btnVolver.addEventListener("click", () => {
-  juego.turnoActual = (juego.turnoActual + 1) % juego.equipos.length;
+  juego.siguienteTurno();
   sessionStorage.setItem("juego", JSON.stringify(juego));
   window.location.href = "ruleta.html";
 });

@@ -1,18 +1,7 @@
-import Juego from "./juego.js";
-import { actualizarTurno } from "./utils.js";
+//import Juego from "./juego.js";
+import {iniciarPagina } from "./utils.js";
 
-let juegoData = JSON.parse(sessionStorage.getItem("juego"));
-if (!juegoData) window.location.href = "index.html";
-let juego = Juego.fromJSON(juegoData);
-
-const turnoDiv = document.querySelector(".turnoActual");
-actualizarTurno(juego, turnoDiv);
-
-const equipo = juego.equipos[juego.turnoActual];
-const posicion = equipo.posicion || 0;
-
-console.log("Juego reconstruido:", juego);
-console.log("Turno actual:", juego.turnoActual, "Equipo:", equipo.nombre, "Posición:", posicion);
+let juego = iniciarPagina();
 
 // 📌 Lista de derechos del niño
 const derechos = [
@@ -28,7 +17,7 @@ const derechos = [
   "Tener derecho al descanso y al ocio"
 ];
 
-// Elegir uno aleatorio
+// Elegir un derecho aleatorio y mostrarlo
 const derechoAleatorio = derechos[Math.floor(Math.random() * derechos.length)];
 document.getElementById("derecho-nino").textContent = derechoAleatorio;
 
@@ -36,8 +25,7 @@ const btnContinuar = document.getElementById("btn-continuar");
 
 btnContinuar.addEventListener("click", () => {
   // Pasar el turno al siguiente equipo
-  juego.turnoActual = (juego.turnoActual + 1) % juego.equipos.length;
-
+  juego.siguienteTurno();
   // Guardar el juego actualizado en sessionStorage
   sessionStorage.setItem("juego", JSON.stringify(juego));
 

@@ -1,5 +1,6 @@
 // utils.js
-export function actualizarTurno(juego, turnoDiv) {
+import Juego from "./juego.js";
+export function actualizarIndicadorTurno(juego, turnoDiv) {
     const equipo = juego.equipos[juego.turnoActual];
     const posicion = equipo.posicion || 0;
     turnoDiv.innerHTML = `
@@ -13,3 +14,14 @@ export function actualizarTurno(juego, turnoDiv) {
     turnoDiv.style.backgroundColor = equipo.color || "#333333"; 
   }
   
+export function iniciarPagina() {
+  let juegoData = JSON.parse(sessionStorage.getItem("juego"));
+  let juego = Juego.fromJSON(juegoData);
+    if (!juego) {
+      window.location.href = "index.html"; // Seguridad
+    }
+    console.log("Juego reconstruido:", juego);
+    const turnoDiv = document.getElementsByClassName("turnoActual")[0];
+    actualizarIndicadorTurno(juego, turnoDiv);
+    return juego;
+  }

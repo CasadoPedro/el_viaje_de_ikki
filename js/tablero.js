@@ -42,7 +42,7 @@ class Tablero {
       { nombre: "Bosque de las decisiones", emocion:"Tristeza",color: "#998DE0", inicio: 18, fin: 25 },
       { nombre: "Nido de las palabras no dichas", emocion:"Enojo",color: "#DB636C", inicio: 26, fin: 33 },
       { nombre: "Río de las emociones", emocion:"Ternura",color: "#FA6BBE", inicio: 34, fin: 41 },
-      { nombre: "Montaña del coraje", emocion:"Alegría",color: "##F8DD62", inicio: 42, fin: 50 },
+      { nombre: "Montaña del coraje", emocion:"Alegría",color: "#F8DD62", inicio: 42, fin: 50 },
       { nombre: "Puente de los vínculos", emocion:"Confianza",color: "#417ABA", inicio: 51, fin: 59 },
       { nombre: "Corazón de Ikki", inicio: 60, fin: 60 }
     ];
@@ -79,17 +79,21 @@ class Tablero {
     return this.casillas.find(c => c.numero === numero);
   }
 
-  /** Verifica si entre origen y destino se pasó por un casillero Regalo */
-  hayRegaloEntre(origen, destino) {
-    // aseguramos que origen < destino
+  /** Devuelve un array con los números de casilleros 'Regalo' entre origen y destino (excluyendo origen, incluyendo destino) */
+  obtenerRegalosEntre(origen, destino) {
     const [inicio, fin] = origen < destino ? [origen, destino] : [destino, origen];
+    const regalos = [];
     for (let i = inicio + 1; i <= fin; i++) {
       const casillero = this.getCasillero(i);
       if (casillero && casillero.efecto === "Regalo") {
-        return true;
+        regalos.push(i);
       }
     }
-    return false;
+    return regalos;
+  }
+
+  hayRegaloEntre(origen, destino) {
+    return this.obtenerRegalosEntre(origen, destino).length > 0;
   }
   obtenerIndiceZona(posicion) {
     const idx = this.zonas.findIndex(z => posicion >= z.inicio && posicion <= z.fin);

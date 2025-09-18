@@ -2,22 +2,19 @@
 
 class Equipo {
   constructor(nombre, frase) {
-    this.nombre = nombre;                       
+    this.nombre = nombre;              
     this.frase = frase;                         
-    this.fraseDescubierta = this.inicializarFrase(frase); 
-    this.posicion = 0;                          
-    this.llegoAlCorazon = false;                
-    this.jeroglificos = [];                     
+    this.fraseDescubierta = this.inicializarFrase(frase);  // frase con letras ocultas
+    this.posicion = 0; // posición en el tablero (0 = inicio)
+    this.llegoAlCorazon = false;  // si ya llegó al corazón de Ikki
+    this.jeroglificos = []; // jeroglificos ya revelados
+    this.regalosTomados = []; // números de casilleros de regalo que ya recibió
+    this.fraseAdivinada = false; // si ya adivinó su frase 
+    this.intentoEnTurno = false; // controla intento de adivinar por turno                  
   }
 
   inicializarFrase(frase) {
     return frase.replace(/[A-Za-zÁÉÍÓÚÑ]/gi, "_");
-  }
-
-  mover(pasos) {
-    const origen = this.posicion;
-    this.posicion += pasos;
-    return { origen, destino: this.posicion }; 
   }
 
   // Obtiene una letra aún no revelada de la frase
@@ -73,14 +70,16 @@ class Equipo {
     return { fraseAnterior, fraseActualizada, jeroglificos: revelados };
   }
 
-
   static fromJSON(data) {
     let equipo = new Equipo(data.nombre, data.frase);
-    equipo.posicion = data.posicion;
-    equipo.llegoAlCorazon = data.llegoCorazon;
-    equipo.fraseDescubierta = data.fraseDescubierta;
+    equipo.posicion = data.posicion ?? 0;
+    equipo.llegoAlCorazon = data.llegoAlCorazon ?? false;
+    equipo.fraseDescubierta = data.fraseDescubierta ?? equipo.inicializarFrase(equipo.frase);
     equipo.color = data.color;
-    equipo.jeroglificos = data.jeroglificos;
+    equipo.jeroglificos = data.jeroglificos ?? [];
+    equipo.regalosTomados = data.regalosTomados ?? [];
+    equipo.fraseAdivinada = data.fraseAdivinada ?? false;
+    equipo.intentoEnTurno = data.intentoEnTurno ?? false;
     return equipo;
   }
 }

@@ -1,5 +1,5 @@
 import Juego from "./juego.js";
-import { actualizarTurno } from "./utils.js";
+import { actualizarIndicadorTurno } from "./utils.js";
 
 // Recuperamos el juego
 let juegoData = JSON.parse(sessionStorage.getItem("juego"));
@@ -11,7 +11,17 @@ console.log("Juego reconstruido:", juego);
 
 // Mostramos turno
 const turnoDiv = document.getElementsByClassName("turnoActual")[0];
-actualizarTurno(juego, turnoDiv);
+actualizarIndicadorTurno(juego, turnoDiv);
 
-// Por ahora no hay lógica extra.
-// Aquí luego integramos MindAR.
+// 👉 Lógica para salir y pasar turno
+const btnSalir = document.getElementById("btn-salir-ikki");
+btnSalir.addEventListener("click", () => {
+  // Pasamos al siguiente equipo
+  juego.turnoActual = (juego.turnoActual + 1) % juego.equipos.length;
+
+  // Guardamos estado
+  sessionStorage.setItem("juego", JSON.stringify(juego));
+
+  // Redirigimos a ruleta
+  window.location.href = "ruleta.html";
+});

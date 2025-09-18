@@ -17,13 +17,41 @@
     width: 80%;
     max-width: 600px;
     height: 400px;
-    background: #eee;
+    margin: 0 auto;
     border: 3px dashed #999;
     border-radius: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    color: #555;
+    overflow: hidden;
+    position: relative; /* clave */
   }
+  
+  #scanner-area a-scene {
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+  }
+  .a-loader, .a-loader-title {
+    display: none !important;
+  }
+  .btn-salir {
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    background-color: #ff6f61;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .btn-salir:hover {
+    background-color: #ff3b2e;
+    transform: scale(1.05);
+  }
+  
+  
+  
   

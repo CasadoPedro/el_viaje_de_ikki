@@ -73,75 +73,7 @@
     flex: 1;
   }
 
-  #mensaje-turno {
-    position: fixed;
-    top: 0.5rem;
-    left: 0.5rem;
-    background-color: white;
-    border: 2px solid #333;
-    padding: 10px;
-    border-radius: 8px;
-    font-weight: bold;
-  }
-  
-  #modal-avance {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.65);
-    z-index: 1000;
-  }
-  
-  #modal-contenido {
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    padding: 30px 50px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4);
-    animation: aparecer 0.3s ease-out;
-    font-family: "Montserrat", sans-serif;
-  }
-  
-  #modal-contenido p {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  #btn-continuar {
-    background: #ff6f61;
-    color: white;
-    border: none;
-    padding: 12px 28px;
-    border-radius: 30px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  #btn-continuar:hover {
-    background: #ff3b2e;
-    transform: scale(1.05);
-  }
-  
-  @keyframes aparecer {
-    from {
-      opacity: 0;
-      transform: scale(0.8);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-/* Modal base */
+  /* Modal Base Styles */
 .modal {
   display: none;
   position: fixed;
@@ -155,29 +87,63 @@
   align-items: center;
 }
 
-.modal-content {
-  background: white;
+.modal-contenido {
+  background: #eed4d4;
   padding: 2rem;
   border-radius: 16px;
   text-align: center;
   max-width: 500px;
-  width: 90%;
+  width: 30%;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  animation: aparecer 0.3s ease-out;
+  font-family: "Montserrat", sans-serif;
 }
 
-.modal-content h2 {
+.modal-contenido h2 {
   margin-bottom: 1rem;
   font-size: 1.8rem;
   color: #333;
 }
 
-.jeroglificos-ganados {
-  font-size: 1rem;
-  color: #444;
-  margin-bottom: 1rem;
-  font-style: italic;
+.modal-contenido p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
 }
 
+/* Button Styles */
+.modal-contenido button {
+  background: #0052cc;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border:black 2px solid;
+  border-radius: 80px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.modal-contenido button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+.modal-contenido button:hover {
+  background: #005fcc;
+}
+  
+  @keyframes aparecer {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
 /* Frase animada */
 .frase-recompensa {
   font-size: 1.4rem;
@@ -188,26 +154,12 @@
   transition: color 0.3s ease-in-out;
 }
 
-/* Botón */
-#btnRecompensaContinuar {
-  background: #0077ff;
-  color: white;
-  padding: 0.7rem 1.5rem;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
+.jeroglificos-ganados {
   font-size: 1rem;
-  transition: background 0.2s;
+  color: #444;
+  margin-bottom: 1rem;
+  font-style: italic;
 }
-#btnRecompensaContinuar:disabled {
-  background: #cccccc;
-  cursor: not-allowed;
-}
-
-#btnRecompensaContinuar:hover {
-  background: #005fcc;
-}
-
 /* Imagen de jeroglífico individual ganado */
 .jeroglifico-img {
   width: 35px;
@@ -222,4 +174,49 @@
   height: 25px;
   margin: 0 2px;
   vertical-align: middle;
+}
+
+#btn-adivinar {
+  position: absolute;
+  bottom: 80px;
+  left: 10px;
+  padding: 10px 15px;
+  background-color: #c71313; 
+  border: 2px solid #333333;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  color: #ffffff; 
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+/* Input Field Styling */
+.input-frase {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 1rem 0;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-family: "Montserrat", sans-serif;
+  box-sizing: border-box;
+}
+
+.input-frase:focus {
+  border-color: #0052cc;
+  box-shadow: 0 0 5px rgba(0, 82, 204, 0.5);
+}
+
+/* Modal Buttons */
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.modal-buttons button {
+  flex: 1;
 }

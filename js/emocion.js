@@ -10,7 +10,7 @@ console.log(`El equipo actual está en un casillero de emoción: ${zona.emocion}
 const nombreEmocion = document.getElementById("nombre-emocion");
 nombreEmocion.textContent = zona.emocion;
 
-const btnContinuar = document.getElementById("btn-continuar");
+const btnContinuar = document.getElementById("boton-continuar");
 
 btnContinuar.addEventListener("click", () => {
   // Pasar el turno al siguiente equipo

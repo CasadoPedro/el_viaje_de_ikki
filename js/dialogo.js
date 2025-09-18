@@ -9,7 +9,7 @@ const pregunta = juego.tablero.obtenerPregunta(juego.equipos[juego.turnoActual].
 // Mostrar la pregunta
 document.getElementById("pregunta-dialogo").innerText = pregunta ?? "No hay pregunta disponible para esta casilla.";
 
-const btnContinuar = document.getElementById("btn-continuar");
+const btnContinuar = document.getElementById("boton-continuar");
 
 btnContinuar.addEventListener("click", () => {
   // Pasar turno

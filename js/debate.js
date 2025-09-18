@@ -21,7 +21,7 @@ const derechos = [
 const derechoAleatorio = derechos[Math.floor(Math.random() * derechos.length)];
 document.getElementById("derecho-nino").textContent = derechoAleatorio;
 
-const btnContinuar = document.getElementById("btn-continuar");
+const btnContinuar = document.getElementById("boton-continuar");
 
 btnContinuar.addEventListener("click", () => {
   // Pasar el turno al siguiente equipo

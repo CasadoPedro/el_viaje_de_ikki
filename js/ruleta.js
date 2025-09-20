@@ -56,11 +56,12 @@ function drawSector(sector, i) {
 
   ctx.translate(rad, rad);
   ctx.rotate(ang + arc / 2);
+  ctx.rotate(Math.PI / 2);
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillStyle = sector.text;
   ctx.font = "bold 40px 'Montserrat', sans-serif";
-  ctx.fillText(sector.label, rad / 1.3, 0);
+  ctx.fillText(sector.label, 0, -rad / 1.3); // Y is negative because we are rotated
   ctx.restore();
 }
 

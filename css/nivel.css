@@ -4,7 +4,7 @@ body {
 
 .container {
     text-align: center;
-    color: black; /* Texto principal en negro */
+    color: black;
     max-width: 900px;
     margin: auto;
 }
@@ -13,28 +13,28 @@ h1 {
     font-weight: 500;
     font-size: 2.5rem;
     margin-bottom: 1rem;
-    color: black; /* Título en negro */
+    color: black;
 }
 
 .subtitulo {
     font-weight: 300;
     font-size: 1rem;
     margin-bottom: 2rem;
-    color: black; /* Subtítulo en negro */
+    color: black;
 }
 
 .fila {
     display: flex;
     justify-content: center;
-    gap: 2rem; /* Más espacio entre botones */
-    margin-bottom: 2rem; /* Más espacio entre filas */
+    gap: 2rem; 
+    margin-bottom: 2rem; 
 }
 
 .btn {
-    width: 180px; /* Más ancho */
-    height: 80px; /* Menos alto */
+    width: 180px; 
+    height: 80px; 
     border: none;
-    border-radius: 25px; /* Más redondeado */
+    border-radius: 25px; 
     color: white;
     font-family: inherit;
     cursor: pointer;
@@ -54,13 +54,13 @@ h1 {
 }
 
 .amarillo {
-    background-color: #FAB858; /* Nuevo color */
+    background-color: #FAB858; 
 }
 
 .azul {
-    background-color: #283583; /* Nuevo color */
+    background-color: #283583; 
 }
 
 .rojo {
-    background-color: #AF0D1E; /* Nuevo color */
+    background-color: #AF0D1E;
 }

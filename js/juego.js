@@ -15,11 +15,8 @@ class Juego {
   }
 
   crearEquipos(cantidad) {
-    const frasesDerechos = [
-      "TENEMOS DERECHO A SER ESCUCHADOS"
-    ];
-
-    return Array.from({ length: cantidad }, (_, i) => {
+    const frasesDerechos = ["TENEMOS DERECHO A SER ESCUCHADOS"];
+    return [...Array(cantidad)].map((_, i) => {
       const nombre = `Equipo ${i + 1}`;
       const frase = frasesDerechos[i % frasesDerechos.length];
       return new Equipo(nombre, frase);
@@ -32,20 +29,15 @@ class Juego {
     const origen = equipo.posicion;
     const destino = Math.min(origen + pasos, 60);
     equipo.posicion = destino;
-
-    // Obtener todos los regalos entre origen y destino
-    const regalos = this.tablero.obtenerRegalosEntre(origen, destino);
-
-    // Para cada regalo, si el equipo no lo recibió antes, aplicarlo (revelar jeroglifico)
-    const regalosProcesados = [];
-    for (let num of regalos) {
-      if (!equipo.regalosTomados.includes(num)) {
-        const resultado = equipo.revelarJeroglifico();
+  
+    const regalosProcesados = this.tablero
+      .obtenerRegalosEntre(origen, destino)
+      .filter(num => !equipo.regalosTomados.includes(num))
+      .map(num => {
         equipo.regalosTomados.push(num);
-        regalosProcesados.push({ casillero: num, ...resultado });
-      }
-    }
-
+        return { casillero: num, ...equipo.revelarJeroglifico() };
+      });
+  
     return {
       equipo: equipo.nombre,
       origen,
@@ -66,58 +58,45 @@ class Juego {
 
   /** Mueve turno al siguiente equipo que NO haya adivinado su frase */
   siguienteTurno() {
-    if (this.equipos.every(e => e.fraseAdivinada)) {
-      return -1; // señal que no quedan equipos activos
-    }
-    let idx = this.turnoActual;
+    if (this.equipos.every(e => e.fraseAdivinada)) return -1;
+  
     const n = this.equipos.length;
-    for (let i = 1; i <= n; i++) {
-      const candidate = (idx + i) % n;
-      if (!this.equipos[candidate].fraseAdivinada) {
-        this.turnoActual = candidate;
-        return this.turnoActual;
-      }
-    }
+    const nextIndex = this.equipos
+      .slice(this.turnoActual + 1)
+      .concat(this.equipos.slice(0, this.turnoActual))
+      .findIndex(e => !e.fraseAdivinada);
+  
+    this.turnoActual = (this.turnoActual + nextIndex + 1) % n;
     return this.turnoActual;
   }
   /** Intento de adivinar (por el equipo actual). Devuelve objeto con resultado y acciones realizadas. */
   intentarAdivinar(textoIntento) {
     const equipo = this.equipos[this.turnoActual];
-    if (equipo.fraseAdivinada) {
-      return { success: false, reason: "Equipo ya finalizado" };
+    if (equipo.fraseAdivinada || equipo.intentoEnTurno) {
+      return { success: false, reason: equipo.fraseAdivinada ? "Equipo ya finalizado" : "Ya intentó adivinar este turno" };
     }
-    if (equipo.intentoEnTurno) {
-      return { success: false, reason: "Ya intentó adivinar este turno" };
-    }
-
+  
     equipo.intentoEnTurno = true;
-
-    const dado = (textoIntento || "").trim().toUpperCase();
-    const correcto = dado === (equipo.frase || "").toUpperCase();
-
+    const correcto = textoIntento.trim().toUpperCase() === equipo.frase.toUpperCase();
+  
     if (correcto) {
       equipo.fraseAdivinada = true;
-      // marcar como terminado
-      // reset intentoEnTurno no relevante ahora
-      // chequear fin de juego
-      const todos = this.equipos.every(e => e.fraseAdivinada);
-      return { success: true, todos };
-    } else {
-      // si falla, retroceder 2 casilleros y terminar turno
-      const origen = equipo.posicion;
-      const destino = Math.max(0, origen - 2);
-      equipo.posicion = destino;
-      return { success: false, retrocedido: true, origen, destino };
+      return { success: true, todos: this.equipos.every(e => e.fraseAdivinada) };
     }
+  
+    equipo.posicion = Math.max(0, equipo.posicion - 2);
+    return { success: false, retrocedido: true, origen: equipo.posicion + 2, destino: equipo.posicion };
   }
 
   // Para reconstrucción desde JSON
   static fromJSON(data) {
-    let juego = new Juego(data.equipos.length || (data.equipos ? data.equipos.length : 0));
-    juego.equipos = data.equipos.map(e => Equipo.fromJSON(e));
-    juego.nivel = data.nivel;
-    juego.turnoActual = data.turnoActual ?? 0;
-    juego.tablero = new Tablero();
+    const juego = new Juego(data.equipos.length || 0);
+    Object.assign(juego, {
+      equipos: data.equipos.map(Equipo.fromJSON),
+      nivel: data.nivel,
+      turnoActual: data.turnoActual ?? 0,
+      tablero: new Tablero()
+    });
     return juego;
   }
 }

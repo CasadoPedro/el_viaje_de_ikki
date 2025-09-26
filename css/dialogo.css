@@ -5,3 +5,19 @@
   color: #575050;
   line-height: 1.5;
 }
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  #main-contenido #pregunta-dialogo {
+    font-size: 1.2rem; 
+    margin: 15px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  #main-contenido #pregunta-dialogo {
+    font-size: 1rem; 
+    margin: 10px 0; 
+    line-height: 1.4; 
+  }
+}

@@ -7,17 +7,18 @@ body {
     color: black;
     max-width: 900px;
     margin: auto;
+    padding: 20px; 
 }
 
 h1 {
-    font-weight: 500;
+    font-weight: 700;
     font-size: 2.5rem;
     margin-bottom: 1rem;
     color: black;
 }
 
 .subtitulo {
-    font-weight: 300;
+    font-weight: 500;
     font-size: 1rem;
     margin-bottom: 2rem;
     color: black;
@@ -28,6 +29,7 @@ h1 {
     justify-content: center;
     gap: 2rem; 
     margin-bottom: 2rem; 
+    flex-wrap: wrap; 
 }
 
 .btn {
@@ -41,6 +43,12 @@ h1 {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center; 
+    transition: transform 0.2s ease; 
+}
+
+.btn:hover {
+    transform: scale(1.05); 
 }
 
 .btn .nivel {
@@ -63,4 +71,59 @@ h1 {
 
 .rojo {
     background-color: #AF0D1E;
+}
+
+/* Estilos para resoluciones más pequeñas */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem; 
+    }
+
+    .subtitulo {
+        font-size: 0.9rem; 
+    }
+
+    .btn {
+        width: 150px; 
+        height: 70px;
+    }
+
+    .btn .nivel {
+        font-size: 1.2rem; 
+    }
+
+    .btn .edad {
+        font-size: 0.9rem; 
+    }
+
+    .fila {
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8rem; 
+    }
+
+    .subtitulo {
+        font-size: 0.8rem; 
+    }
+
+    .btn {
+        width: 120px; 
+        height: 60px;
+    }
+
+    .btn .nivel {
+        font-size: 1rem; 
+    }
+
+    .btn .edad {
+        font-size: 0.8rem; 
+    }
+
+    .fila {
+        gap: 0.2rem;
+    }
 }

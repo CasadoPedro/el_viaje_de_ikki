@@ -72,7 +72,7 @@ body {
     color: white;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 6px 1px rgba(0, 0, 0, 0.25);
     z-index: 1000;
   }
   
@@ -81,3 +81,66 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
   }
+
+  /* Responsive Styles */
+@media (max-width: 768px) {
+  #main-contenido {
+      max-width: 90%;
+      padding: 20px;
+  }
+
+  #main-contenido h1 {
+      font-size: 36px;
+  }
+
+  #main-contenido h2 {
+      font-size: 28px;
+  }
+
+  #main-contenido h3 {
+      font-size: 20px;
+  }
+
+  #boton-continuar {
+      padding: 12px 28px;
+      font-size: 16px;
+      bottom: 20px;
+      right: 20px;
+  }
+
+  .turnoActual {
+      font-size: 16px;
+      padding: 8px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  #main-contenido {
+      max-width: 95%;
+      padding: 15px;
+  }
+
+  #main-contenido h1 {
+      font-size: 28px;
+  }
+
+  #main-contenido h2 {
+      font-size: 24px;
+  }
+
+  #main-contenido h3 {
+      font-size: 18px;
+  }
+
+  #boton-continuar {
+      padding: 10px 24px;
+      font-size: 14px;
+      bottom: 15px;
+      right: 15px;
+  }
+
+  .turnoActual {
+      font-size: 14px;
+      padding: 6px 10px;
+  }
+}

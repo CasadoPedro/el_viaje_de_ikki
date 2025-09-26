@@ -15,7 +15,8 @@ class Juego {
   }
 
   crearEquipos(cantidad) {
-    const frasesDerechos = ["TENEMOS DERECHO A SER ESCUCHADOS"];
+    const frasesDerechos = ["TENEMOS DERECHO A SER ESCUCHADOS", "TODOS TENEMOS DERECHO A LA EDUCACIÓN", "TODOS TENEMOS DERECHO A LA SALUD", "TENEMOS DERECHO A JUGAR Y DESCANSAR", "TODOS TENEMOS DERECHO A UNA VIVIENDA DIGNA", "TODOS TENEMOS DERECHO A LA ALIMENTACIÓN", "TODOS TENEMOS DERECHO A LA PROTECCIÓN CONTRA EL ABUSO Y LA EXPLOTACIÓN", "TODOS TENEMOS DERECHO A LA IGUALDAD Y SIN DISCRIMINACIÓN"
+    ];
     return [...Array(cantidad)].map((_, i) => {
       const nombre = `Equipo ${i + 1}`;
       const frase = frasesDerechos[i % frasesDerechos.length];

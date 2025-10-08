@@ -1,6 +1,7 @@
 import { events, initRuleta } from "./ruleta.js";
 import Juego from "./juego.js";
 import { actualizarIndicadorTurno } from "./utils.js";
+import { updateMusicForZone } from "./musica.js";
 
 // Inicializar la ruleta
 initRuleta();
@@ -52,6 +53,13 @@ function prepararTurno() {
     juego.siguienteTurno();
   }
   equipoActual.intentoEnTurno = false;
+  // Get the current zone based on the team's position
+  const posicion = equipoActual.posicion || 0;
+  const zonaActual = juego.tablero.zonas[juego.tablero.obtenerIndiceZona(posicion)]?.nombre || "Inicio";
+
+  // Update the music for the current zone
+  updateMusicForZone(zonaActual);
+
   actualizarIndicadorTurno(juego, ELEMENTOS_DOM.turnoActual);
 }
 
@@ -246,7 +254,7 @@ function mostrarModalFelicidades(equipo, resultado) {
   };
 }
 
-function mostrarModalError(equipo, resultado) {
+function mostrarModalError(equipo) {
   ELEMENTOS_DOM.modalFelicidades.style.display = "flex";
   ELEMENTOS_DOM.tituloFelicidades.textContent = `Lo siento ${equipo.nombre}`;
   ELEMENTOS_DOM.parrafoFelicidades.textContent = "La frase es incorrecta.\n Retrocedes 2 casilleros.";

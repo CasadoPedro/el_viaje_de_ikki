@@ -1,7 +1,9 @@
-//import Juego from "./juego.js";
 import {iniciarPagina } from "./utils.js";
+import { updateMusicForZone } from "./musica.js";
 
 let juego = iniciarPagina();
+updateMusicForZone(juego.tablero.zonas.find(z => juego.equipos[juego.turnoActual].posicion >= z.inicio && juego.equipos[juego.turnoActual].posicion <= z.fin).nombre);
+
 
 // 📌 Lista de derechos del niño
 const derechos = [

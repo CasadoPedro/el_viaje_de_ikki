@@ -144,3 +144,57 @@ body {
       padding: 6px 10px;
   }
 }
+
+#music-control {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    background: rgba(25, 25, 25, 0.8);
+    padding: 0.4rem 0.6rem;
+    border-radius: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    z-index: 9998;
+  }
+  
+  #music-control img {
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    filter: invert(1);
+  }
+  
+  #music-control:hover img {
+    transform: scale(1.1);
+  }
+  
+  #music-control input[type="range"] {
+    width: 0;
+    opacity: 0;
+    margin-left: 0.5rem;
+    transition: width 0.3s ease, opacity 0.3s ease;
+    accent-color: #d8dfde;
+  }
+  
+  #music-control:hover input[type="range"] {
+    width: 80px;
+    opacity: 1;
+  }
+  
+  /* Mejor apariencia en móviles */
+  @media (max-width: 600px) {
+    #music-control {
+      padding: 0.4rem;
+      background: rgba(25, 25, 25, 0.7);
+    }
+  
+    #music-control img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+  
+  

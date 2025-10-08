@@ -3,10 +3,9 @@ import { iniciarPagina } from "./utils.js";
 let juego = iniciarPagina();
 
 // Referencias DOM
-const introCuento = document.getElementById("intro-cuento");
+const introCuento = document.getElementById("main-contenido");
 const quizCuento = document.getElementById("quiz-cuento");
 const btnIntroContinuar = document.getElementById("btnIntroContinuar");
-const btnVolver = document.getElementById("btnVolver");
 const opciones = document.querySelectorAll(".opciones img");
 
 // Modal incorrecto
@@ -56,12 +55,5 @@ btnIncorrectoContinuar.addEventListener("click", () => {
   sessionStorage.setItem("juego", JSON.stringify(juego));
 
   // Volver a ruleta
-  window.location.href = "ruleta.html";
-});
-
-// Caso correcto → volver normalmente
-btnVolver.addEventListener("click", () => {
-  juego.siguienteTurno();
-  sessionStorage.setItem("juego", JSON.stringify(juego));
   window.location.href = "ruleta.html";
 });

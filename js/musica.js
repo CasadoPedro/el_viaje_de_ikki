@@ -3,14 +3,14 @@ let audio;
 
 // Music mapping for zones
 const ZONE_MUSIC = {
-  "Laberinto del miedo": "../sounds/musicaLaberinto.mp3",
-  "Mar de la soledad": "../sounds/musicaInicio.mp3",
+  "Laberinto del miedo": "./sounds/musicaLaberinto.mp3",
+  "Mar de la soledad": "./sounds/musicaInicio.mp3",
   "Bosque de las decisiones": "../sounds/musicaInicio.mp3",
-  "Nido de las palabras no dichas": "../sounds/musicaInicio.mp3",
-  "Río de las emociones": "../sounds/musicaInicio.mp3",
-  "Montaña del coraje": "../sounds/musicaInicio.mp3",
-  "Puente de los vínculos": "../sounds/musicaInicio.mp3",
-  "Corazón de Ikki": "../sounds/musicaInicio.mp3",
+  "Nido de las palabras no dichas": "./sounds/musicaInicio.mp3",
+  "Río de las emociones": "./sounds/musicaInicio.mp3",
+  "Montaña del coraje": "./sounds/musicaInicio.mp3",
+  "Puente de los vínculos": "./sounds/musicaInicio.mp3",
+  "Corazón de Ikki": "./sounds/musicaInicio.mp3",
 };
 
 // Restore playback state from sessionStorage
@@ -20,7 +20,7 @@ const savedVolume = sessionStorage.getItem('musicVolume');
 const savedMuted = sessionStorage.getItem('musicMuted');
 
 // Determine the initial music source
-let initialMusic = '../sounds/musicaInicio.mp3';
+let initialMusic = './sounds/musicaInicio.mp3';
 if (savedZone && ZONE_MUSIC[savedZone]) {
   initialMusic = ZONE_MUSIC[savedZone];
 }
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const musicControl = document.createElement('div');
   musicControl.id = 'music-control';
   musicControl.innerHTML = `
-    <img id="volume-icon" src="../visualAssets/iconosMusica/midVolume.png" alt="Volumen" />
+    <img id="volume-icon" src="./visualAssets/iconosMusica/midVolume.png" alt="Volumen" />
     ${!isMobile ? `<input id="volume-slider" type="range" min="0" max="1" step="0.01" value="${audio.volume}">` : ''}
   `;
   document.body.appendChild(musicControl);
@@ -106,13 +106,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Function to update the volume icon
   const updateIcon = () => {
     if (audio.muted || audio.volume === 0) {
-      icon.src = '../visualAssets/iconosMusica/mute.png';
+      icon.src = './visualAssets/iconosMusica/mute.png';
     } else if (audio.volume > 0.66) {
-      icon.src = '../visualAssets/iconosMusica/fullVolume.png';
+      icon.src = './visualAssets/iconosMusica/fullVolume.png';
     } else if (audio.volume > 0.33) {
-      icon.src = '../visualAssets/iconosMusica/midVolume.png';
+      icon.src = './visualAssets/iconosMusica/midVolume.png';
     } else {
-      icon.src = '../visualAssets/iconosMusica/lowVolume.png';
+      icon.src = './visualAssets/iconosMusica/lowVolume.png';
     }
   };
 

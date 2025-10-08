@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Cuento</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./css/cuento.css">
   <link rel="stylesheet" href="./css/global.css">
 </head>
@@ -10,7 +11,7 @@
   <div class="turnoActual"></div>
 
   <!-- Intro -->
-  <section id="intro-cuento" class="pantalla">
+  <section id="main-contenido">
     <h1>CAISTE EN UN CASILLERO DE CUENTO</h1>
     <p>LEER EL CUENTO: <strong>LA CASA DEL BOSQUE OSCURO</strong></p>
     <button id="btnIntroContinuar">CONTINUAR</button>
@@ -25,7 +26,6 @@
       <img src="./visualAssets/cuentos/cuentoOP2.jpg" alt="Opción 2" data-opcion="2">
       <img src="./visualAssets/cuentos/cuentoOP3.jpg" alt="Opción 3" data-opcion="3">
     </div>
-    <button id="btnVolver" style="display:none;">VOLVER A LA RULETA</button>
   </section>
 
   <!-- Modal Incorrecto -->
@@ -37,6 +37,8 @@
     </div>
   </div>
 
+  <!-- JS separado-->
+  <script type="module" src="./js/musica.js"></script>
   <script type="module" src="./js/cuento.js"></script>
 </body>
 </html>

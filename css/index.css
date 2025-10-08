@@ -72,22 +72,44 @@ button:hover:not(:disabled) {
   height: 100%;
   background: black;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 9999;
 }
 
 #splash img {
-  width: 50%; /* ajusta el tamaño del logo */
-  animation: fadeInOut 4s ease forwards;
+  width: 50%;
+  animation: fadeIn 2s ease-in-out forwards;
 }
 
-/* Animación de entrada y salida */
+#splash p#splashMessage {
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 20px;
+  opacity: 0;
+  text-align: center;
+  animation: fadeInOut 4s ease-in-out infinite;
+  animation-delay: 1.5s;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 @keyframes fadeInOut {
-  0% { opacity: 0; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { opacity: 0; }
+  0%, 100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
 /* Para que el contenido principal recupere el flex */

@@ -1,17 +1,18 @@
-// index.js
 import Juego from "./juego.js";
 
+//   Elementos del DOM
 const select = document.getElementById("equipoSelect");
 const btn = document.getElementById("startBtn");
 
-// Mostrar logo unos segundos y luego el contenido
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    document.getElementById("splash").style.display = "none";
-    document.getElementById("mainContent").style.display = "flex";
-  }, 4000); // 4 segundos
-});
+const splash = document.getElementById("splash");
+const mainContent = document.getElementById("mainContent");
 
+// Mostrar logo y mensaje, luego ocultar al hacer clic
+splash.addEventListener("click", () => {
+  splash.style.display = "none";
+  mainContent.style.display = "flex";
+});
+// Event Listener para el select
 select.addEventListener("change", () => {
   btn.disabled = select.value === "";
 });

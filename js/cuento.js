@@ -225,9 +225,10 @@ function handleCardSelection(cardNumber) {
 
 // Function to hide unselected options
 function hideUnselectedOptions(selectedCard) {
-    // Select all cards by their IDs instead of .clickable class
+    // Hide all cards except the selected one
     const allCards = document.querySelectorAll('#card1-plane, #card2-plane, #card3-plane');
     const allTexts = document.querySelectorAll('a-text[value*="Seguir"], a-text[value*="Salir"], a-text[value*="Hablar"]');
+    const allTextBgs = document.querySelectorAll('#text1-bg, #text2-bg, #text3-bg');
     
     allCards.forEach(card => {
         const cardNum = card.getAttribute('data-card');
@@ -245,7 +246,8 @@ function hideUnselectedOptions(selectedCard) {
         }
     });
     
-    allTexts.forEach(text => {
+    // Hide unselected text and their backgrounds
+    allTexts.forEach((text, index) => {
         const textValue = text.getAttribute('value');
         let isSelectedText = false;
         
@@ -265,17 +267,38 @@ function hideUnselectedOptions(selectedCard) {
             }, 500);
         }
     });
+    
+    // Hide unselected text backgrounds
+    allTextBgs.forEach((bg, index) => {
+        let isSelectedBg = false;
+        
+        if (selectedCard === '1' && bg.id === 'text1-bg') isSelectedBg = true;
+        if (selectedCard === '2' && bg.id === 'text2-bg') isSelectedBg = true;
+        if (selectedCard === '3' && bg.id === 'text3-bg') isSelectedBg = true;
+        
+        if (!isSelectedBg) {
+            // Animate background disappearing
+            bg.setAttribute('animation__fadeOut', 'property: opacity; to: 0; dur: 500');
+            
+            // Remove from scene after animation
+            setTimeout(() => {
+                if (bg.parentNode) {
+                    bg.parentNode.removeChild(bg);
+                }
+            }, 500);
+        }
+    });
 }
 
 // Function to move selected card to center and add confirmation text
 function moveSelectedToCenter(cardNumber, optionText) {
     const selectedCard = document.querySelector(`[data-card="${cardNumber}"]`);
     const selectedText = getSelectedText(cardNumber);
-    const greyPlane = document.querySelector('a-plane[color="grey"]');
+    const selectedTextBg = getSelectedTextBackground(cardNumber);
     
     if (selectedCard) {
-        // Animate card moving to center of the gray plane
-        selectedCard.setAttribute('animation__moveToCenter', 'property: position; to: 0 0 0.1; dur: 1000; easing: easeInOutQuad');
+        // Animate card moving to center
+        selectedCard.setAttribute('animation__moveToCenter', 'property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad');
         
         // Scale up the selected card slightly
         selectedCard.setAttribute('animation__scaleUp', 'property: scale; to: 1.3 1.3 1.3; dur: 1000; easing: easeInOutQuad');
@@ -285,20 +308,28 @@ function moveSelectedToCenter(cardNumber, optionText) {
         // Change the text to show the selection
         selectedText.setAttribute('value', `Elegiste la opcion: ${optionText}`);
         
-        // Move the text to below the card
-        selectedText.setAttribute('animation__moveText', 'property: position; to: 0 -0.25 0.11; dur: 1000; easing: easeInOutQuad');
+        // Move the text to below the card at center
+        selectedText.setAttribute('animation__moveText', 'property: position; to: 0 -0.15 0.11; dur: 1000; easing: easeInOutQuad');
         
-        // Scale up the text
-        selectedText.setAttribute('animation__scaleText', 'property: scale; to: 1.2 1.2 1.2; dur: 1000; easing: easeInOutQuad');
+        // Keep text at normal size
+        selectedText.setAttribute('animation__scaleText', 'property: scale; to: 1 1 1; dur: 1000; easing: easeInOutQuad');
         
         console.log('Text changed to:', `Elegiste la opcion: ${optionText}`);
+    }
+    
+    if (selectedTextBg) {
+        // Move the background to match the text position - keep same size
+        selectedTextBg.setAttribute('animation__moveBg', 'property: position; to: 0 -0.15 0.10; dur: 1000; easing: easeInOutQuad');
+        
+        // Keep background at original size
+        selectedTextBg.setAttribute('animation__scaleBg', 'property: scale; to: 1 1 1; dur: 1000; easing: easeInOutQuad');
     }
     
     // After animation completes (1000ms), evaluate the choice
     setTimeout(() => {
         if (!choiceEvaluated) {
             choiceEvaluated = true;
-            evaluateChoice(cardNumber, selectedText, greyPlane);
+            evaluateChoice(cardNumber, selectedText, selectedTextBg);
         }
     }, 2000); // Wait 2 seconds after animation to show result
 }
@@ -319,18 +350,27 @@ function evaluateChoice(cardNumber, selectedText, greyPlane) {
 
 // Function to handle correct choice - show 3D model
 function handleCorrectChoice(selectedText, greyPlane) {
+    // Hide the selected card immediately
+    hideSelectedCard();
+    
     // Change grey plane to green
     if (greyPlane) {
         greyPlane.setAttribute('animation__colorChange', 'property: color; to: #4CAF50; dur: 500; easing: easeInOutQuad');
     }
     
-    // Change text to show success message
+    // Change text to show success message and slide it down to make space for model
     if (selectedText) {
         selectedText.setAttribute('value', '¡Opcion correcta! Ikki los felicita');
         selectedText.setAttribute('animation__colorChange', 'property: color; to: #ffffff; dur: 500; easing: easeInOutQuad');
         
-        // Make text more prominent
+        // Make text more prominent and slide it down
         selectedText.setAttribute('animation__emphasize', 'property: scale; to: 1.2 1.2 1.2; dur: 500; easing: easeInOutQuad');
+        selectedText.setAttribute('animation__slideDown', 'property: position; to: 0 -0.6 0.11; dur: 800; easing: easeInOutQuad');
+    }
+    
+    // Move grey plane down with the text
+    if (greyPlane) {
+        greyPlane.setAttribute('animation__slideDownBg', 'property: position; to: 0 -0.6 0.10; dur: 800; easing: easeInOutQuad');
     }
     
     // Show the 3D model after a short delay
@@ -349,26 +389,37 @@ function show3DModel() {
     const targetEntity = document.querySelector('[mindar-image-target]');
     
     if (targetEntity) {
-        // Create the 3D model entity
+        // 1. CREACIÓN Y POSICIÓN BASE
         const ikkiModel = document.createElement('a-entity');
         ikkiModel.setAttribute('obj-model', 'obj: #ikki-obj; mtl: #ikki-mtl');
-        ikkiModel.setAttribute('position', '0 0 0.5');
-        ikkiModel.setAttribute('scale', '0.03 0.03 0.03');
-        ikkiModel.setAttribute('rotation', '0 0 0');
+        
+        ikkiModel.setAttribute('position', '0 0 -0.2');
+    
+        const targetScale = '0.10 0.10 0.10'; 
+        ikkiModel.setAttribute('scale', targetScale);
+        
+        ikkiModel.setAttribute('rotation', '0 0 0'); 
+        
         ikkiModel.id = 'ikki-3d-model';
         
-        // Add entrance animation
-        ikkiModel.setAttribute('animation__fadeIn', 'property: opacity; from: 0; to: 1; dur: 1000; easing: easeInOutQuad');
-        ikkiModel.setAttribute('animation__scaleIn', 'property: scale; from: 0 0 0; to: 0.05 0.05 0.05; dur: 1000; easing: easeOutBack');
+        // 2. ANIMACIONES
+
+        ikkiModel.setAttribute('animation__scaleIn', `property: scale; from: 0 0 0; to: ${targetScale}; dur: 1000; easing: easeOutBack`);
         
-        // Add rotation animation for visual appeal
-        ikkiModel.setAttribute('animation__rotate', 'property: rotation; to: -360 0 0; dur: 4000; loop: false; easing: linear');
+        ikkiModel.setAttribute('animation__backflip', {
+            property: 'rotation',
+            from: '15 0 0',        // Ángulo inicial (sin rotación en X)
+            to: '-345 0 0',        // Gira 360 grados en X
+            dur: 1200,             // Duración rápida para el backflip
+            loop: false,
+            easing: 'easeInSine',  // Curva de aceleración para un movimiento realista
+            delay: 1000            // Inicia después de 1 segundo
+        });
         
-        hideSelectedCard();
-        // Add the model to the target entity
+        // 3. ADICIÓN AL TARGET
         targetEntity.appendChild(ikkiModel);
         
-        console.log('3D Ikki model displayed successfully');
+        console.log('3D Ikki model displayed successfully with backflip animation');
         
     } else {
         console.error('Could not find target entity to display 3D model');
@@ -379,7 +430,6 @@ function show3DModel() {
 function hideSelectedCard() {
     // Find the remaining card (the selected one)
     const remainingCard = document.querySelector('#card1-plane, #card2-plane, #card3-plane');
-    const remainingText = document.querySelector('a-text[value*="Elegiste la opcion"]');
     
     if (remainingCard) {
         // Animate card disappearing
@@ -394,20 +444,6 @@ function hideSelectedCard() {
         }, 300);
         
         console.log('Selected card hidden');
-    }
-    
-    if (remainingText) {
-        // Animate text disappearing
-        remainingText.setAttribute('animation__fadeOut', 'property: opacity; to: 0; dur: 1000; easing: easeInOutQuad');
-        
-        // Remove from scene after animation
-        setTimeout(() => {
-            if (remainingText.parentNode) {
-                remainingText.parentNode.removeChild(remainingText);
-            }
-        }, 500);
-        
-        console.log('Selected text hidden');
     }
 }
 
@@ -427,12 +463,22 @@ function continueGameFlow() {
 
 // Function to handle incorrect choice consequences
 function handleIncorrectChoice(selectedText, greyPlane) {
-    // Change grey plane to red
-    if (greyPlane) {
-        greyPlane.setAttribute('animation__colorChange', 'property: color; to:rgb(182, 21, 21); dur: 500; easing: easeInOutQuad');
+    // Find the text background for the selected option
+    let textBg;
+    const selectedCard = document.querySelector('#card1-plane, #card2-plane, #card3-plane');
+    if (selectedCard) {
+        const cardNumber = selectedCard.getAttribute('data-card');
+        if (cardNumber === '1') textBg = document.querySelector('#text1-bg');
+        else if (cardNumber === '2') textBg = document.querySelector('#text2-bg');
+        else if (cardNumber === '3') textBg = document.querySelector('#text3-bg');
     }
     
-    // Change text to show penalty message
+    // Change text background to red
+    if (textBg) {
+        textBg.setAttribute('animation__colorChange', 'property: color; to: rgb(182, 21, 21); dur: 500; easing: easeInOutQuad');
+    }
+    
+    // Change text to show penalty message with white color
     if (selectedText) {
         selectedText.setAttribute('value', 'La opcion es incorrecta, retrocede 2 casilleros');
         selectedText.setAttribute('animation__colorChange', 'property: color; to: #ffffff; dur: 500; easing: easeInOutQuad');
@@ -495,6 +541,20 @@ function getSelectedText(cardNumber) {
             return document.querySelector('a-text[value="Salir silenciosamente de la casa"]');
         case '3':
             return document.querySelector('a-text[value="Hablar con la figura"]');
+        default:
+            return null;
+    }
+}
+
+// Function to get the selected text background element
+function getSelectedTextBackground(cardNumber) {
+    switch(cardNumber) {
+        case '1':
+            return document.querySelector('#text1-bg');
+        case '2':
+            return document.querySelector('#text2-bg');
+        case '3':
+            return document.querySelector('#text3-bg');
         default:
             return null;
     }

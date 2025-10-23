@@ -52,3 +52,13 @@ Puedes probar la experiencia de la aplicación web desplegada en Netlify.
     width="300" 
   />
 </p>
+
+### Tablero del juego
+
+<p>
+  <img 
+    src="visualAssets/tablero.jpg" 
+    alt="Imágen del tablero de juego" 
+    width="400" 
+  />
+</p>

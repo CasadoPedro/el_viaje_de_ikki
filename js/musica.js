@@ -1,7 +1,7 @@
-// Initialize the audio object with the default music
+// Inicialización del objeto de audio
 let audio;
 
-// Music mapping for zones
+// Mapeo de música para zonas
 const ZONE_MUSIC = {
   "Laberinto del miedo": "./sounds/musicaLaberinto.mp3",
   "Mar de la soledad": "./sounds/musicaInicio.mp3",
@@ -13,30 +13,30 @@ const ZONE_MUSIC = {
   "Corazón de Ikki": "./sounds/musicaInicio.mp3",
 };
 
-// Restore playback state from sessionStorage
+// Restaurar el estado de reproducción desde sessionStorage
 const savedZone = sessionStorage.getItem('currentZone');
 const savedTime = sessionStorage.getItem('musicTime');
 const savedVolume = sessionStorage.getItem('musicVolume');
 const savedMuted = sessionStorage.getItem('musicMuted');
 
-// Determine the initial music source
+// Determinar la fuente de música inicial
 let initialMusic = './sounds/musicaInicio.mp3';
 if (savedZone && ZONE_MUSIC[savedZone]) {
   initialMusic = ZONE_MUSIC[savedZone];
 }
 
-// Initialize the audio object
+// Inicializar el objeto de audio
 audio = new Audio(initialMusic);
 audio.loop = true;
 audio.volume = savedVolume ? parseFloat(savedVolume) : 0.5;
 audio.muted = savedMuted === 'true';
 
-// Restore playback time if available
+// Restaurar el tiempo de reproducción si está disponible
 if (savedTime) {
   audio.currentTime = parseFloat(savedTime);
 }
 
-// Play the audio when the page loads
+// Reproducir el audio cuando se carga la página
 document.addEventListener('DOMContentLoaded', () => {
   const playPromise = audio.play();
   if (playPromise !== undefined) {
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Save the current playback state before the page unloads
+  // Guardar el estado de reproducción antes de salir de la página
   window.addEventListener('beforeunload', () => {
     sessionStorage.setItem('musicTime', audio.currentTime);
     sessionStorage.setItem('currentZone', sessionStorage.getItem('currentZone') || '');
@@ -57,15 +57,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Updates the music based on the current zone.
- * @param {string} zoneName - The name of the current zone.
+ * Actualiza la música según la zona actual.
+ * @param {string} zoneName - El nombre de la zona actual.
  */
 export function updateMusicForZone(zoneName) {
   const newMusic = ZONE_MUSIC[zoneName];
   const savedZone = sessionStorage.getItem('currentZone');
   const savedTime = sessionStorage.getItem('musicTime');
 
-  // If the zone is the same, resume from the saved time
+  // Si la zona es la misma, reanudar desde el tiempo guardado
   if (savedZone === zoneName && newMusic) {
     if (savedTime) {
       audio.currentTime = parseFloat(savedTime);
@@ -76,22 +76,22 @@ export function updateMusicForZone(zoneName) {
     return;
   }
 
-  // If the zone is different, switch to the new music
+  // Si la zona es diferente, cambiar a la nueva música
   if (newMusic && audio.src !== new URL(newMusic, window.location.href).href) {
     audio.src = newMusic;
-    audio.currentTime = 0; // Start from the beginning of the new track
+    audio.currentTime = 0; // Comenzar desde el principio de la nueva pista
     audio.play();
   }
 
-  // Save the current zone in sessionStorage
+  // Guardar la zona actual en sessionStorage
   sessionStorage.setItem('currentZone', zoneName);
 }
 
-// Volume and mute controls
+// Controles de volumen y silencio
 document.addEventListener('DOMContentLoaded', () => {
   const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  // Create the music control container
+  // Crear el contenedor de control de música
   const musicControl = document.createElement('div');
   musicControl.id = 'music-control';
   musicControl.innerHTML = `
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const icon = document.getElementById('volume-icon');
   const slider = document.getElementById('volume-slider');
 
-  // Function to update the volume icon
+  // Función para actualizar el icono según el volumen
   const updateIcon = () => {
     if (audio.muted || audio.volume === 0) {
       icon.src = './visualAssets/iconosMusica/mute.png';
@@ -116,13 +116,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Mute/unmute event
+  // Evento Mute/unmute 
   icon.addEventListener('click', () => {
     audio.muted = !audio.muted;
     updateIcon();
   });
 
-  // Volume slider event
+  // Evento para el control deslizante de volumen
   if (slider) {
     slider.addEventListener('input', () => {
       audio.volume = parseFloat(slider.value);

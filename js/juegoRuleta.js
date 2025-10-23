@@ -53,11 +53,11 @@ function prepararTurno() {
     juego.siguienteTurno();
   }
   equipoActual.intentoEnTurno = false;
-  // Get the current zone based on the team's position
+  // Obtener la zona actual del equipo
   const posicion = equipoActual.posicion || 0;
   const zonaActual = juego.tablero.zonas[juego.tablero.obtenerIndiceZona(posicion)]?.nombre || "Inicio";
 
-  // Update the music for the current zone
+  // Actualizar la música para la zona actual
   updateMusicForZone(zonaActual);
 
   actualizarIndicadorTurno(juego, ELEMENTOS_DOM.turnoActual);
@@ -193,10 +193,10 @@ function adivinarFrase() {
   ELEMENTOS_DOM.equipoNombre.textContent = equipo.nombre;
   ELEMENTOS_DOM.modalAdivinarFrase.style.display = "flex";
   
-  // Automatically focus the input field
+  // Enfocar el campo de entrada al abrir el modal
   ELEMENTOS_DOM.inputFrase.focus();
 
-  // Handle "Enter" key press for submission
+  // Event listener para presionar Enter o confirmar
   ELEMENTOS_DOM.inputFrase.onkeydown = (event) => {
     if (event.key === "Enter") {
       ELEMENTOS_DOM.botonConfirmarFrase.click();
@@ -282,7 +282,7 @@ function mostrarIndicadorError(mensaje) {
     errorElemento = document.createElement("p");
     errorElemento.id = "input-error-mensaje";
     errorElemento.className = "error-mensaje";
-    // Insert the error message directly after the input field
+    // Insertar el mensaje de error después del campo de entrada
     ELEMENTOS_DOM.inputFrase.insertAdjacentElement("afterend", errorElemento);
   }
   errorElemento.textContent = mensaje;

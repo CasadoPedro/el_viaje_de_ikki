@@ -1,4 +1,3 @@
-// utils.js
 import Juego from "./juego.js";
 export function actualizarIndicadorTurno(juego, turnoDiv) {
     const equipo = juego.equipos[juego.turnoActual];

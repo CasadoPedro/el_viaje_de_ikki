@@ -2,10 +2,10 @@ import { iniciarPagina } from "./utils.js";
 
 let juego = iniciarPagina();
 let targetFound = false;
-let choiceEvaluated = false; // Flag to prevent multiple evaluations
-let cardClicked = false; // Flag to prevent multiple card clicks
+let choiceEvaluated = false; // Bandera para prevenir múltiples evaluaciones
+let cardClicked = false; // Bandera para prevenir múltiples clics en cartas
 
-// Add functionality to hide intro div when button is clicked
+// Funcionalidad para ocultar el div de introducción cuando se hace clic en el botón
 document.addEventListener('DOMContentLoaded', function() {
     const btnIntroContinuar = document.getElementById('btnIntroContinuar');
     const introDiv = document.getElementById('intro');
@@ -18,19 +18,19 @@ document.addEventListener('DOMContentLoaded', function() {
             escenaAR.style.marginTop = '0';
             escenaAR.style.height = '100vh';
             
-            // Show scanning message when AR starts
+            // Mostrar mensaje de escaneo cuando inicia AR
             scanningMessage.style.display = 'flex';
             
-            // Initialize target detection
+            // Inicializar detección de objetivo
             initializeTargetDetection();
             
-            // Initialize card click listeners after AR scene is shown
+            // Inicializar listeners de clic en cartas después de mostrar la escena AR
             initializeCardInteraction();
         });
     }
 });
 
-// Function to initialize target detection
+// Función para inicializar la detección de objetivo
 function initializeTargetDetection() {
     const arScene = document.querySelector('a-scene');
     const targetEntity = document.querySelector('[mindar-image-target]');
@@ -38,35 +38,35 @@ function initializeTargetDetection() {
     const instructionMessage = document.getElementById('instructionMessage');
     
     if (arScene && targetEntity) {
-        // Listen for target found event on the target entity itself
+        // Escuchar evento de objetivo encontrado en la entidad objetivo
         targetEntity.addEventListener('targetFound', function(event) {
             if (!targetFound) {
                 targetFound = true;
                 console.log('Target found! Hiding scanning message and showing instructions.');
                 
-                // Hide scanning message
+                // Ocultar mensaje de escaneo
                 scanningMessage.style.display = 'none';
                 
-                // Show instruction message
+                // Mostrar mensaje de instrucciones
                 instructionMessage.style.display = 'block';
                 
-                // Hide instruction message after 5 seconds
+                // Ocultar mensaje de instrucciones después de 5 segundos
                 setTimeout(() => {
                     instructionMessage.style.display = 'none';
                 }, 5000);
             }
         });
         
-        // Listen for target lost event on the target entity itself
+        // Escuchar evento de objetivo perdido en la entidad objetivo
         targetEntity.addEventListener('targetLost', function(event) {
             if (targetFound) {
                 targetFound = false;
                 console.log('Target lost! Showing scanning message again.');
                 
-                // Show scanning message again
+                // Mostrar mensaje de escaneo nuevamente
                 scanningMessage.style.display = 'flex';
                 
-                // Hide instruction message
+                // Ocultar mensaje de instrucciones
                 instructionMessage.style.display = 'none';
             }
         });
@@ -77,16 +77,16 @@ function initializeTargetDetection() {
     }
 }
 
-// Function to initialize card interaction
+// Función para inicializar la interacción con cartas
 function initializeCardInteraction() {
-    // Wait a bit for the AR scene to fully load
+    // Esperar un poco para que la escena AR se cargue completamente
     setTimeout(() => {
         const cards = document.querySelectorAll('.clickable');
         
         cards.forEach(card => {
-            // Use A-Frame's click event system
+            // Usar el sistema de eventos de clic de A-Frame
             card.addEventListener('click', function(event) {
-                // Prevent multiple clicks
+                // Prevenir múltiples clics
                 if (cardClicked) {
                     console.log('Card interaction already processed, ignoring click');
                     return;
@@ -95,20 +95,20 @@ function initializeCardInteraction() {
                 const cardNumber = this.getAttribute('data-card');
                 console.log(`Card ${cardNumber} was clicked!`);
                 
-                // Set flag to prevent further clicks
+                // Establecer bandera para prevenir más clics
                 cardClicked = true;
                 
-                // Disable all cards immediately
+                // Deshabilitar todas las cartas inmediatamente
                 disableAllCards();
                 
-                // Add enhanced visual feedback
+                // Agregar retroalimentación visual mejorada
                 addVisualFeedback(this);
                 
-                // Handle the card selection logic here
+                // Manejar la lógica de selección de carta 
                 handleCardSelection(cardNumber);
             });
             
-            // Add mouseenter and mouseleave for hover effects
+            // Agregar mouseenter y mouseleave para efectos hover
             card.addEventListener('mouseenter', function() {
                 if (!cardClicked && !this.classList.contains('card-selected')) {
                     this.setAttribute('animation', 'property: scale; to: 1.05 1.05 1.05; dur: 150');
@@ -126,7 +126,7 @@ function initializeCardInteraction() {
     }, 1000);
 }
 
-// Function to disable all cards after selection
+// Función para deshabilitar todas las cartas después de la selección
 function disableAllCards() {
     const allCards = document.querySelectorAll('.clickable');
     allCards.forEach(card => {
@@ -136,22 +136,22 @@ function disableAllCards() {
     });
 }
 
-// Function to add enhanced visual feedback
+// Función para agregar retroalimentación visual mejorada
 function addVisualFeedback(cardElement) {
-    // Remove previous selection classes from all cards
+    // Remover clases de selección previas de todas las cartas
     const allCards = document.querySelectorAll('.clickable');
     allCards.forEach(card => {
         card.classList.remove('card-selected');
     });
     
-    // Add selection class to clicked card
+    // Agregar clase de selección a la carta clickeada
     cardElement.classList.add('card-selected');
     
-    // Get the associated text element
+    // Obtener el elemento de texto asociado
     const cardId = cardElement.id;
     let textElement;
     
-    // Find the text element that corresponds to this card
+    // Encontrar el elemento de texto que corresponde a esta carta
     if (cardId === 'card1-plane') {
         textElement = document.querySelector('a-text[value="Seguir a la figura"]');
     } else if (cardId === 'card2-plane') {
@@ -160,45 +160,45 @@ function addVisualFeedback(cardElement) {
         textElement = document.querySelector('a-text[value="Hablar con la figura"]');
     }
     
-    // Enhanced A-Frame animation with bright white effect for card
+    // Animación mejorada de A-Frame con efecto blanco brillante para la carta
     cardElement.setAttribute('animation__scale', 'property: scale; to: 1.2 1.2 1.2; dur: 300; easing: easeOutBack');
     cardElement.setAttribute('animation__glow', 'property: material.color; to: #ffffff; dur: 300');
     cardElement.setAttribute('animation__brightness', 'property: material.emissive; to: #666666; dur: 300');
     
-    // Animate text to grow if found
+    // Animar texto para crecer si se encuentra
     if (textElement) {
         textElement.setAttribute('animation__textScale', 'property: scale; to: 1.5 1.5 1.5; dur: 300; easing: easeOutBack');
         textElement.setAttribute('animation__textGlow', 'property: color; to: #ffffff; dur: 300');
     }
     
-    // Return to normal after animation
+    // Volver a la normalidad después de la animación
     setTimeout(() => {
         cardElement.setAttribute('animation__scale', 'property: scale; to: 1 1 1; dur: 300; easing: easeInBack');
         cardElement.setAttribute('animation__glow', 'property: material.color; to: #ffffff; dur: 300');
         cardElement.setAttribute('animation__brightness', 'property: material.emissive; to: #000000; dur: 300');
         
-        // Return text to normal if found
+        // Volver texto a la normalidad si se encuentra
         if (textElement) {
             textElement.setAttribute('animation__textScale', 'property: scale; to: 1 1 1; dur: 300; easing: easeInBack');
             textElement.setAttribute('animation__textGlow', 'property: color; to: #ffffff; dur: 300');
         }
         
-        // Keep the selected state for a bit longer
+        // Mantener el estado seleccionado por un poco más de tiempo
         setTimeout(() => {
             cardElement.classList.remove('card-selected');
         }, 1000);
     }, 300);
 }
 
-// Function to handle card selection
+// Función para manejar la selección de carta
 function handleCardSelection(cardNumber) {
-    // Prevent multiple selections (additional safety check)
+    // Prevenir múltiples selecciones (verificación de seguridad adicional)
     if (choiceEvaluated) {
         console.log('Choice already evaluated, ignoring additional processing');
         return;
     }
     
-    // Get the option text based on card number
+    // Obtener el texto de opción basado en el número de carta
     let optionText = '';
     switch(cardNumber) {
         case '1':
@@ -216,16 +216,16 @@ function handleCardSelection(cardNumber) {
     
     console.log(`Player chose: ${optionText}`);
     
-    // Hide all cards and their texts except the selected one
+    // Ocultar todas las cartas y sus textos excepto la seleccionada
     hideUnselectedOptions(cardNumber);
     
-    // Move selected card to center and add confirmation text
+    // Mover carta seleccionada al centro y agregar texto de confirmación
     moveSelectedToCenter(cardNumber, optionText);
 }
 
-// Function to hide unselected options
+// Función para ocultar opciones no seleccionadas
 function hideUnselectedOptions(selectedCard) {
-    // Hide all cards except the selected one
+    // Ocultar todas las cartas excepto la seleccionada
     const allCards = document.querySelectorAll('#card1-plane, #card2-plane, #card3-plane');
     const allTexts = document.querySelectorAll('a-text[value*="Seguir"], a-text[value*="Salir"], a-text[value*="Hablar"]');
     const allTextBgs = document.querySelectorAll('#text1-bg, #text2-bg, #text3-bg');
@@ -233,11 +233,11 @@ function hideUnselectedOptions(selectedCard) {
     allCards.forEach(card => {
         const cardNum = card.getAttribute('data-card');
         if (cardNum !== selectedCard) {
-            // Animate card disappearing
+            // Animar carta desapareciendo
             card.setAttribute('animation__fadeOut', 'property: opacity; to: 0; dur: 500');
             card.setAttribute('animation__shrink', 'property: scale; to: 0 0 0; dur: 500');
             
-            // Remove from scene after animation
+            // Remover de la escena después de la animación
             setTimeout(() => {
                 if (card.parentNode) {
                     card.parentNode.removeChild(card);
@@ -246,7 +246,7 @@ function hideUnselectedOptions(selectedCard) {
         }
     });
     
-    // Hide unselected text and their backgrounds
+    // Ocultar texto no seleccionado y sus fondos
     allTexts.forEach((text, index) => {
         const textValue = text.getAttribute('value');
         let isSelectedText = false;
@@ -256,10 +256,10 @@ function hideUnselectedOptions(selectedCard) {
         if (selectedCard === '3' && textValue.includes('Hablar')) isSelectedText = true;
         
         if (!isSelectedText) {
-            // Animate text disappearing
+            // Animar texto desapareciendo
             text.setAttribute('animation__fadeOut', 'property: opacity; to: 0; dur: 500');
             
-            // Remove from scene after animation
+            // Remover de la escena después de la animación
             setTimeout(() => {
                 if (text.parentNode) {
                     text.parentNode.removeChild(text);
@@ -268,7 +268,7 @@ function hideUnselectedOptions(selectedCard) {
         }
     });
     
-    // Hide unselected text backgrounds
+    // Ocultar fondos de texto no seleccionados
     allTextBgs.forEach((bg, index) => {
         let isSelectedBg = false;
         
@@ -277,10 +277,10 @@ function hideUnselectedOptions(selectedCard) {
         if (selectedCard === '3' && bg.id === 'text3-bg') isSelectedBg = true;
         
         if (!isSelectedBg) {
-            // Animate background disappearing
+            // Animar fondo desapareciendo
             bg.setAttribute('animation__fadeOut', 'property: opacity; to: 0; dur: 500');
             
-            // Remove from scene after animation
+            // Remover de la escena después de la animación
             setTimeout(() => {
                 if (bg.parentNode) {
                     bg.parentNode.removeChild(bg);
@@ -290,54 +290,54 @@ function hideUnselectedOptions(selectedCard) {
     });
 }
 
-// Function to move selected card to center and add confirmation text
+// Función para mover carta seleccionada al centro y agregar texto de confirmación
 function moveSelectedToCenter(cardNumber, optionText) {
     const selectedCard = document.querySelector(`[data-card="${cardNumber}"]`);
     const selectedText = getSelectedText(cardNumber);
     const selectedTextBg = getSelectedTextBackground(cardNumber);
     
     if (selectedCard) {
-        // Animate card moving to center
+        // Animar carta moviéndose al centro
         selectedCard.setAttribute('animation__moveToCenter', 'property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad');
         
-        // Scale up the selected card slightly
+        // Escalar un poco la carta seleccionada
         selectedCard.setAttribute('animation__scaleUp', 'property: scale; to: 1.3 1.3 1.3; dur: 1000; easing: easeInOutQuad');
     }
     
     if (selectedText) {
-        // Change the text to show the selection
+        // Cambiar el texto para mostrar la selección
         selectedText.setAttribute('value', `Elegiste la opcion: ${optionText}`);
         
-        // Move the text to below the card at center
+        // Mover el texto debajo de la carta en el centro
         selectedText.setAttribute('animation__moveText', 'property: position; to: 0 -0.15 0.11; dur: 1000; easing: easeInOutQuad');
         
-        // Keep text at normal size
+        // Mantener texto en tamaño normal
         selectedText.setAttribute('animation__scaleText', 'property: scale; to: 1 1 1; dur: 1000; easing: easeInOutQuad');
         
         console.log('Text changed to:', `Elegiste la opcion: ${optionText}`);
     }
     
     if (selectedTextBg) {
-        // Move the background to match the text position - keep same size
+        // Mover el fondo para coincidir con la posición del texto - mantener mismo tamaño
         selectedTextBg.setAttribute('animation__moveBg', 'property: position; to: 0 -0.15 0.10; dur: 1000; easing: easeInOutQuad');
         
-        // Keep background at original size
+        // Mantener fondo en tamaño original
         selectedTextBg.setAttribute('animation__scaleBg', 'property: scale; to: 1 1 1; dur: 1000; easing: easeInOutQuad');
     }
     
-    // After animation completes (1000ms), evaluate the choice
+    // Después de que la animación termine (1000ms), evaluar la elección
     setTimeout(() => {
         if (!choiceEvaluated) {
             choiceEvaluated = true;
             evaluateChoice(cardNumber, selectedText, selectedTextBg);
         }
-    }, 2000); // Wait 2 seconds after animation to show result
+    }, 2000); // Esperar 2 segundos después de la animación para mostrar resultado
 }
 
-// Function to evaluate if the choice is correct and handle consequences
+// Función para evaluar si la elección es correcta y manejar las consecuencias
 function evaluateChoice(cardNumber, selectedText, greyPlane) {
     console.log('Evaluating choice for card:', cardNumber);
-    const isCorrect = cardNumber === '2'; // Option 2 is the correct one
+    const isCorrect = cardNumber === '2'; // Opción 2 es la correcta
     
     if (isCorrect) {
         console.log('Correct choice! Option 2 (Salir silenciosamente de la casa) was selected.');
@@ -348,43 +348,43 @@ function evaluateChoice(cardNumber, selectedText, greyPlane) {
     }
 }
 
-// Function to handle correct choice - show 3D model
+// Función para manejar elección correcta - mostrar modelo 3D
 function handleCorrectChoice(selectedText, greyPlane) {
-    // Hide the selected card immediately
+    // Ocultar la carta seleccionada inmediatamente
     hideSelectedCard();
     
-    // Change grey plane to green
+    // Cambiar plano gris a verde
     if (greyPlane) {
         greyPlane.setAttribute('animation__colorChange', 'property: color; to: #4CAF50; dur: 500; easing: easeInOutQuad');
     }
     
-    // Change text to show success message and slide it down to make space for model
+    // Cambiar texto para mostrar mensaje de éxito y deslizarlo hacia abajo para hacer espacio al modelo
     if (selectedText) {
         selectedText.setAttribute('value', '¡Opcion correcta! Ikki los felicita');
         selectedText.setAttribute('animation__colorChange', 'property: color; to: #ffffff; dur: 500; easing: easeInOutQuad');
         
-        // Make text more prominent and slide it down
+        // Hacer texto más prominente y deslizarlo hacia abajo
         selectedText.setAttribute('animation__emphasize', 'property: scale; to: 1.2 1.2 1.2; dur: 500; easing: easeInOutQuad');
         selectedText.setAttribute('animation__slideDown', 'property: position; to: 0 -0.6 0.11; dur: 800; easing: easeInOutQuad');
     }
     
-    // Move grey plane down with the text
+    // Mover plano gris hacia abajo con el texto
     if (greyPlane) {
         greyPlane.setAttribute('animation__slideDownBg', 'property: position; to: 0 -0.6 0.10; dur: 800; easing: easeInOutQuad');
     }
     
-    // Show the 3D model after a short delay
+    // Mostrar el modelo 3D después de una breve demora
     setTimeout(() => {
         show3DModel();
     }, 1000);
     
-    // Continue the game flow after showing the model
+    // Continuar el flujo del juego después de mostrar el modelo
     setTimeout(() => {
         continueGameFlow();
-    }, 5000); // Give time to appreciate the model
+    }, 5000);
 }
 
-// Function to show the 3D Ikki model
+// Función para mostrar el modelo 3D de Ikki
 function show3DModel() {
     const targetEntity = document.querySelector('[mindar-image-target]');
     
@@ -408,12 +408,12 @@ function show3DModel() {
         
         ikkiModel.setAttribute('animation__backflip', {
             property: 'rotation',
-            from: '15 0 0',        // Ángulo inicial (sin rotación en X)
-            to: '-345 0 0',        // Gira 360 grados en X
-            dur: 1200,             // Duración rápida para el backflip
+            from: '15 0 0',
+            to: '-345 0 0',
+            dur: 1200,
             loop: false,
-            easing: 'easeInSine',  // Curva de aceleración para un movimiento realista
-            delay: 1000            // Inicia después de 1 segundo
+            easing: 'easeInSine',
+            delay: 1000
         });
         
         // 3. ADICIÓN AL TARGET
@@ -426,17 +426,17 @@ function show3DModel() {
     }
 }
 
-// Function to hide the selected card
+// Función para ocultar la carta seleccionada
 function hideSelectedCard() {
-    // Find the remaining card (the selected one)
+    // Encontrar la carta restante (la seleccionada)
     const remainingCard = document.querySelector('#card1-plane, #card2-plane, #card3-plane');
     
     if (remainingCard) {
-        // Animate card disappearing
+        // Animar carta desapareciendo
         remainingCard.setAttribute('animation__fadeOut', 'property: opacity; to: 0; dur: 300; easing: easeInOutQuad');
         remainingCard.setAttribute('animation__shrink', 'property: scale; to: 0 0 0; dur: 300; easing: easeInBack');
         
-        // Remove from scene after animation
+        // Remover de la escena después de la animación
         setTimeout(() => {
             if (remainingCard.parentNode) {
                 remainingCard.parentNode.removeChild(remainingCard);
@@ -447,23 +447,23 @@ function hideSelectedCard() {
     }
 }
 
-// Function to continue the game flow after correct choice
+// Función para continuar el flujo del juego después de la elección correcta
 function continueGameFlow() {
     console.log('Continuing game flow after correct choice');
     
-    // Move to next turn
+    // Mover al siguiente turno
     juego.siguienteTurno();
 
-    // Save final state and redirect back to main game
+    // Guardar estado final y redirigir de vuelta al juego principal
     sessionStorage.setItem("juego", JSON.stringify(juego));
     setTimeout(() => {
         window.location.href = "ruleta.html";
     }, 1000);
 }
 
-// Function to handle incorrect choice consequences
+// Función para manejar las consecuencias de elección incorrecta
 function handleIncorrectChoice(selectedText, greyPlane) {
-    // Find the text background for the selected option
+    // Encontrar el fondo de texto para la opción seleccionada
     let textBg;
     const selectedCard = document.querySelector('#card1-plane, #card2-plane, #card3-plane');
     if (selectedCard) {
@@ -473,66 +473,66 @@ function handleIncorrectChoice(selectedText, greyPlane) {
         else if (cardNumber === '3') textBg = document.querySelector('#text3-bg');
     }
     
-    // Change text background to red
+    // Cambiar fondo de texto a rojo
     if (textBg) {
         textBg.setAttribute('animation__colorChange', 'property: color; to: rgb(182, 21, 21); dur: 500; easing: easeInOutQuad');
     }
     
-    // Change text to show penalty message with white color
+    // Cambiar texto para mostrar mensaje de penalización con color blanco
     if (selectedText) {
         selectedText.setAttribute('value', 'La opcion es incorrecta, retrocede 2 casilleros');
         selectedText.setAttribute('animation__colorChange', 'property: color; to: #ffffff; dur: 500; easing: easeInOutQuad');
         
-        // Make text more prominent
+        // Hacer texto más prominente
         selectedText.setAttribute('animation__emphasize', 'property: scale; to: 1.1 1.1 1.1; dur: 500; easing: easeInOutQuad');
     }
     
-    // Apply game logic to move team back 2 positions
+    // Aplicar lógica del juego para mover equipo hacia atrás 2 posiciones
     setTimeout(() => {
         applyPenalty();
-    }, 2000); // Wait 2 seconds to show the penalty message
+    }, 2000);
 }
 
-// Function to apply the penalty in the game logic
+// Función para aplicar la penalización en la lógica del juego
 function applyPenalty() {
-    // Get current game state from sessionStorage
+    // Obtener estado actual del juego desde sessionStorage
     const datosJuego = JSON.parse(sessionStorage.getItem("juego"));
     
     if (datosJuego && juego) {
         console.log('Applying penalty: moving current team back 2 positions');
         
-        // Get current team
+        // Obtener equipo actual
         const equipoActual = juego.equipos[juego.turnoActual];
         const posicionAnterior = equipoActual.posicion;
         
-        // Move team back 2 positions (minimum position is 0)
+        // Mover equipo hacia atrás 2 posiciones (posición mínima es 0)
         const movimiento = juego.retrocederEquipo(2);
         
         console.log(`${equipoActual.nombre} moved from position ${posicionAnterior} to position ${equipoActual.posicion}`);
         
-        // Save updated game state
+        // Guardar estado actualizado del juego
         sessionStorage.setItem("juego", JSON.stringify(juego));
         
-        // Move to next turn
+        // Mover al siguiente turno
         juego.siguienteTurno();
         
-        // Save final state and redirect back to main game
+        // Guardar estado final y redirigir de vuelta al juego principal
         sessionStorage.setItem("juego", JSON.stringify(juego));
         
-        // Redirect back to the main game board after a short delay
+        // Redirigir de vuelta al tablero principal después de una breve demora
         setTimeout(() => {
             window.location.href = "ruleta.html";
         }, 2000);
     } else {
         console.error('No game data found or juego object not available');
-        // If no game data, redirect to main page
+        // Si no hay datos del juego, redirigir a página principal
         setTimeout(() => {
             window.location.href = "index.html";
         }, 2000);
     }
 }
 
-// Function to get the selected text element
+// Función para obtener el elemento de texto seleccionado
 function getSelectedText(cardNumber) {
     switch(cardNumber) {
         case '1':
@@ -546,7 +546,7 @@ function getSelectedText(cardNumber) {
     }
 }
 
-// Function to get the selected text background element
+// Función para obtener el elemento de fondo de texto seleccionado
 function getSelectedTextBackground(cardNumber) {
     switch(cardNumber) {
         case '1':

@@ -9,7 +9,6 @@
     display: grid;
     place-items: center;
     margin: 0;
-    /*background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb, #a18cd1, #fbc2eb, #f6d365, #fda085, #84fab0, #8fd3f4);*/
   }
 
   #spin_the_wheel {
@@ -76,7 +75,7 @@
     flex: 1;
   }
 
-  /* Modal Base Styles */
+  /* Estilo para los modales */
 .modal {
   display: none;
   position: fixed;
@@ -121,7 +120,7 @@
   margin-bottom: 20px;
 }
 
-/* Button Styles */
+/* Estilo de botones */
 .modal-contenido button {
   background: #0052cc;
   color: white;
@@ -183,6 +182,8 @@
   vertical-align: text-bottom;
 }
 
+/* Estilo del botón "Adivinar" */
+
 #btn-adivinar {
   position: absolute;
   top: 120px;
@@ -199,7 +200,9 @@
   transition: background-color 0.3s ease;
   cursor: pointer;
 }
-/* Input Field Styling */
+
+/* Estilos para el campo de entrada de la frase */
+
 .input-frase {
   width: 100%;
   padding: 0.8rem;
@@ -217,7 +220,7 @@
   box-shadow: 0 0 5px rgba(0, 82, 204, 0.5);
 }
 
-/* Modal Buttons */
+/* Estilos para los botones del modal */
 .modal-buttons {
   display: flex;
   justify-content: space-between;
@@ -228,14 +231,14 @@
   flex: 1;
 }
 
-/* Highlight the input field with a red border when there's an error */
+/* Actualizar el estilo del campo de entrada en caso de error */
 .input-error {
   border: 2px solid red;
   outline: none;
   animation: shake 0.3s ease-in-out;
 }
 
-/* Error message styling */
+/* Estilos para el mensaje de error */
 .error-mensaje {
   color: red;
   font-size: 0.9rem;
@@ -244,7 +247,7 @@
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Shake animation for the input field */
+/* Animación de sacudida */
 @keyframes shake {
   0%, 100% {
     transform: translateX(0);
@@ -260,7 +263,7 @@
   }
 }
 
-/* Fade-in animation for the error message */
+/* Animación de desvanecimiento para el mensaje de error */
 @keyframes fadeIn {
   from {
     opacity: 0;

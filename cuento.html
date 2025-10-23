@@ -19,7 +19,7 @@
     TURNO: --
   </div>
 
-  <!-- Scanning message -->
+  <!-- Mensaje de escaneo -->
   <div id="scanningMessage" class="scanning-overlay">
     <div class="scanning-content">
       <h2>Escanea la carta de cuento</h2>
@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <!-- Instruction message (hidden initially) -->
+  <!-- Mensaje de instrucciones (oculto inicialmente) -->
   <div id="instructionMessage" class="instruction-overlay" style="display: none;">
     <p>Elige una opción y toca la pantalla para seleccionarla</p>
   </div>
@@ -52,7 +52,7 @@
   >
     <!-- Target único -->
     <a-assets>
-      <!-- Modelo -->
+      <!-- Cartas -->
       <img id="card1" src="./visualAssets/cuentos/cuentoOP1.png"/>
       <img id="card2" src="./visualAssets/cuentos/cuentoOP2.png"/>
       <img id="card3" src="./visualAssets/cuentos/cuentoOP3.png"/>
@@ -63,12 +63,12 @@
     <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="far: ${customFields.libVersion}; objects: .clickable"></a-camera>
 
     <a-entity mindar-image-target="targetIndex: 0">
-      <!-- Cards positioned with reduced spacing -->
+      <!-- Cartas posicionadas con separación-->
       <a-plane id="card1-plane" src="#card1" position="0 0.50 0.1" height="0.36" width="0.64" rotation="0 0 0" class="clickable" data-card="1"></a-plane>
       <a-plane id="card2-plane" src="#card2" position="0 0 0.1" height="0.36" width="0.64" rotation="0 0 0" class="clickable" data-card="2"></a-plane>
       <a-plane id="card3-plane" src="#card3" position="0 -0.50 0.1" height="0.36" width="0.64" rotation="0 0 0" class="clickable" data-card="3"></a-plane>
-      
-      <!-- Text with grey backgrounds positioned further below each card -->
+
+      <!-- Texto con fondos grises posicionados más abajo de cada carta -->
       <a-plane id="text1-bg" color="grey" opacity="0.8" position="0 0.25 0.10" height="0.08" width="0.55" rotation="0 0 0"></a-plane>
       <a-text value="Seguir a la figura" position="0 0.25 0.11" align="center" width="0.5" color="#000000" font="dejavu"></a-text>
       

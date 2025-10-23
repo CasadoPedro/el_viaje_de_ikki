@@ -6,7 +6,7 @@
   line-height: 1.5;
 }
 
-/* Responsive Styles */
+/* Estilos responsivos para dispositivos */
 @media (max-width: 768px) {
   #main-contenido #pregunta-dialogo {
     font-size: 1.2rem; 

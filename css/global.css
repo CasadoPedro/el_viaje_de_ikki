@@ -82,7 +82,7 @@ body {
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
   }
 
-  /* Responsive Styles */
+  /* Estilos responsivos para páginas dialogo debate y emoción */
 @media (max-width: 768px) {
   #main-contenido {
       max-width: 90%;
@@ -145,6 +145,8 @@ body {
   }
 }
 
+/* Estilos para el control de música */
+
 #music-control {
     position: fixed;
     top: 1rem;
@@ -184,7 +186,7 @@ body {
     opacity: 1;
   }
   
-  /* Mejor apariencia en móviles */
+  /* Mejor apariencia en móviles para el controlador de música*/
   @media (max-width: 600px) {
     #music-control {
       padding: 0.4rem;
